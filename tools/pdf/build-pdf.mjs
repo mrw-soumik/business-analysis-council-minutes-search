@@ -143,8 +143,8 @@ function buildHtml(pageRefs = {}) {
     <div class="cover-rule"></div>
     <table class="cover-meta">
       <tr><th>Author</th><td>Mostafa Rafiur Wasib</td></tr>
-      <tr><th>Version</th><td>0.9, complete draft for stakeholder validation</td></tr>
-      <tr><th>Date</th><td>17 October 2026</td></tr>
+      <tr><th>Version</th><td>0.9.1, complete draft for stakeholder validation</td></tr>
+      <tr><th>Date</th><td>17 October 2026 (analysis); 18 October 2026 (Project A's measured results recorded)</td></tr>
       <tr><th>Method</th><td>BABOK Guide v3 requirements classification; BPMN 2.0; MoSCoW; INVEST and Gherkin; WCAG 2.1 AA</td></tr>
       <tr><th>Implementation</th><td>Project A: <a href="https://github.com/mrw-soumik/stjohns-council-minutes-rag">github.com/mrw-soumik/stjohns-council-minutes-rag</a></td></tr>
       <tr><th>Repository</th><td><a href="https://github.com/mrw-soumik/business-analysis-council-minutes-search">github.com/mrw-soumik/business-analysis-council-minutes-search</a></td></tr>
@@ -157,7 +157,7 @@ function buildHtml(pageRefs = {}) {
         <li>Current-state and future-state process maps (Diagrams 1 and 2)</li>
         <li>Requirements with acceptance criteria (Part 1, section 9)</li>
         <li>Stories US-05, US-07 and US-15 with Gherkin criteria (Part 2)</li>
-        <li>Forward traceability: requirement to test to automated check (Part 4, section 3)</li>
+        <li>Traceability and measured results: requirement to test to automated check (Part 4, sections 3 and 4)</li>
       </ol>
     </div>
     <div class="cover-disclaimer">Independent portfolio project. Not affiliated with or endorsed by the City of St. John's. Source documents are &copy; City of St. John's and are retrieved from the City's public meetings portal; this pack does not redistribute them. Facts about the current state were checked on public City pages on 17 October 2026. No stakeholder interviews have taken place; assumptions are labelled.</div>
@@ -238,6 +238,16 @@ for (let pass = 2; pass <= 3; pass++) {
   }
   if (pass === 3) throw new Error(`Page numbers did not settle: ${changed.join(', ')}`);
 }
+
+// Any "(NN pages)" stated next to a link to the full pack must match the PDF.
+const finalPages = pageTexts(OUT).length;
+for (const file of ['README.md', '00-executive-summary.md']) {
+  const text = readFileSync(resolve(root, file), 'utf8');
+  for (const m of text.matchAll(/council-minutes-assistant-ba-pack\.pdf\)[^(\n]*\((\d+) pages\)/g)) {
+    if (Number(m[1]) !== finalPages) throw new Error(`${file} says the full pack has ${m[1]} pages; it has ${finalPages}. Update the text and rebuild the summary.`);
+  }
+}
+console.log(`page count: README and summary state ${finalPages} pages, matching the PDF`);
 
 const links = checkPdfLinks(OUT);
 if (links.errors.length) {

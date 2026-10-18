@@ -1,13 +1,13 @@
 # Business Analysis: St. John's Council Minutes Assistant
 
-**Start here: [2-page summary](00-executive-summary.md)** ([PDF](council-minutes-assistant-ba-summary.pdf)). For the deep dive, see the [full pack as one PDF](council-minutes-assistant-ba-pack.pdf) (75 pages) and the four documents listed below.
+**Start here: [2-page summary](00-executive-summary.md)** ([PDF](council-minutes-assistant-ba-summary.pdf)). For the deep dive, see the [full pack as one PDF](council-minutes-assistant-ba-pack.pdf) (80 pages) and the four documents listed below.
 
 A complete business analysis work sample for a public-sector AI product: the requirements, user stories, UAT plan, traceability and BPMN process maps for a service that answers plain-language questions about St. John's City Council decisions, with citations to the official minutes.
 
 > **Independent portfolio project.** Not affiliated with or endorsed by the City of St. John's. Source documents are © City of St. John's and are retrieved from the City's public meetings portal; this repository does not redistribute them.
 
 - **Author:** Mostafa Rafiur Wasib ([GitHub: mrw-soumik](https://github.com/mrw-soumik))
-- **Status:** version 0.9, complete draft for stakeholder validation, 17 October 2026
+- **Status:** version 0.9.1, complete draft for stakeholder validation (analysis 17 October 2026; Project A's measured results recorded 18 October 2026)
 - **Full pack as one PDF:** [council-minutes-assistant-ba-pack.pdf](council-minutes-assistant-ba-pack.pdf)
 
 <!-- pdf:start -->
@@ -28,17 +28,17 @@ This repository is the **business analysis** for that product, written to the st
 2. **Process maps:** the [current state](diagrams/current-state.svg) with pain points, then the [future state](diagrams/future-state.svg). Both are BPMN 2.0 models.
 3. **Requirements:** [BRD section 9](01-business-requirements-document.md#9-requirements). Shared IDs (BR, FR, NFR) with priority, rationale and testable acceptance criteria.
 4. **Three stories:** [US-05](02-user-stories.md#us-05-get-the-outcome-exactly-as-recorded) (a deferral must not be reported as an approval), [US-07](02-user-stories.md#us-07-see-citations-with-meeting-name-date-and-page) (citations) and [US-15](02-user-stories.md#us-15-ingest-newly-published-minutes-on-a-schedule) (ingestion).
-5. **Traceability:** the [forward matrix](04-traceability-matrix.md#3-forward-traceability), from business requirement to the automated check that measures it.
+5. **Traceability and results:** the [forward matrix](04-traceability-matrix.md#3-forward-traceability), from business requirement to the automated check that measures it, and the [measured results](04-traceability-matrix.md#4-measured-results-from-project-a).
 
 ## What is in the pack
 
 | Document | Contents |
 |---|---|
-| [00-executive-summary.md](00-executive-summary.md) and [its PDF](council-minutes-assistant-ba-summary.pdf) | Two-page summary: problem, scope, stakeholders, current and future state, the ten most important requirements, success measures, acceptance approach, top risks and links to everything else |
+| [00-executive-summary.md](00-executive-summary.md) and [its PDF](council-minutes-assistant-ba-summary.pdf) | Two-page summary: problem, scope, stakeholders, current and future state, the ten most important requirements, success measures, acceptance approach and measured results, top risks and links to everything else |
 | [01-business-requirements-document.md](01-business-requirements-document.md) | The core BRD: document control, executive summary, background, SMART success measures with baseline methods, scope, stakeholder register, power and interest grid, RACI, elicitation plan, proto-personas, current and future state with BPMN maps, gap analysis, requirements with IDs and acceptance criteria, data requirements and conceptual data model, business rules, transition requirements, assumptions, constraints and dependencies, risks (including AI, privacy and copyright risks), open questions, glossary and a blank sign-off table |
 | [02-user-stories.md](02-user-stories.md) | 7 epics and 26 INVEST user stories with Gherkin acceptance criteria, MoSCoW priority, relative estimates and the requirements each satisfies; prioritization rationale and a two-release plan |
-| [03-uat-test-plan.md](03-uat-test-plan.md) | UAT objectives, approach, entry and exit criteria, roles, environment, test data and question bank, defect severity and priority, schedule template, 30 test cases (all "Not run") and the mapping to Project A's automated checks (all "Pending") |
-| [04-traceability-matrix.md](04-traceability-matrix.md) and [traceability.csv](traceability.csv) | Business requirement to functional or non-functional requirement to user stories to UAT test cases to Project A automated checks, generated from the documents and checked for gaps |
+| [03-uat-test-plan.md](03-uat-test-plan.md) | UAT objectives, approach, entry and exit criteria, roles, environment, test data and question bank, defect severity and priority, schedule template, 30 test cases (all "Not run"), and Project A's measured results for the 14 automated checks |
+| [04-traceability-matrix.md](04-traceability-matrix.md) and [traceability.csv](traceability.csv) | Business requirement to functional or non-functional requirement to user stories to UAT test cases to Project A automated checks, with each requirement's measured status; generated from the documents and checked for gaps |
 | [diagrams/](diagrams/) | Current-state and future-state BPMN 2.0 models (`.bpmn`) with SVG and PNG renders, the context diagram and the conceptual data model |
 | [evidence/](evidence/) and [scripts/portal_snapshot.py](scripts/portal_snapshot.py) | The reproducible source of every current-state count quoted in the BRD |
 
@@ -48,7 +48,7 @@ The implementation lives in a separate repository, [stjohns-council-minutes-rag]
 
 - This pack **defines** the requirements and their acceptance thresholds. For example, NFR-01 requires the correct source page in the top five results for at least 85% of answerable test questions.
 - Project A **implements** them and **measures** the thresholds with its automated evaluation suite.
-- The traceability matrix links each requirement to the Project A check that measures it (PA-01 to PA-14). Every result is **Pending** until Project A publishes its evaluation report. This pack claims no results.
+- The traceability matrix links each requirement to the Project A check that measures it (PA-01 to PA-14). Project A's measured results were recorded on 18 October 2026: 13 of the 14 checks met their thresholds (PA-02 is report-only). The p95 answer time for NFR-03 (12.82 s against a 10 s target) did not, and the next steps are recorded. Citations use the agenda item instead of the page number because of the PDF access constraint (C-03).
 
 ## Key findings from the current-state analysis
 
@@ -65,6 +65,7 @@ Observed on the City's public pages and eSCRIBE portal on 17 October 2026 (sourc
 - Current-state facts are limited to what is publicly observable, each with its source. Everything about City internal processes is labelled as an assumption to validate.
 - No interviews, workshops or surveys have taken place. The personas are proto-personas, and BRD section 5.5 sets out the elicitation plan that would validate them.
 - No baseline is invented. Success measures state how each baseline will be measured; targets are proposals for the sponsor to confirm.
+- Measured results are Project A's own, copied from its README and `eval/results`; this pack does not re-measure them. No human UAT has been performed, so every UAT test case is still "Not run".
 <!-- pdf:end -->
 
 ## Standards and validation

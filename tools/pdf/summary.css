@@ -2,7 +2,7 @@
 
 @page {
   margin: 0.5in 0.6in 0.6in 0.6in;
-  @bottom-left { content: "St. John's Council Minutes Assistant  |  Two-page summary of the business analysis pack v0.9"; }
+  @bottom-left { content: "St. John's Council Minutes Assistant  |  Two-page summary of the business analysis pack v0.9.1"; }
 }
 
 html { font-size: 8.5pt; line-height: 1.32; }

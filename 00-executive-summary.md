@@ -2,7 +2,7 @@
 
 > **Independent portfolio project.** Not affiliated with or endorsed by the City of St. John's. Source documents are © City of St. John's and are retrieved from the City's public meetings portal; this repository does not redistribute them.
 
-**Mostafa Rafiur Wasib, business analyst.** This summarizes version 0.9 of the business analysis pack (17 October 2026), a complete draft for stakeholder validation. Current-state facts come from public City pages. No stakeholder interviews have taken place, so the roles and needs below are assumptions to validate. For the full detail, see the [full pack](council-minutes-assistant-ba-pack.pdf) (75 pages).
+**Mostafa Rafiur Wasib, business analyst.** This summarizes version 0.9.1 of the business analysis pack: the analysis of 17 October 2026, with the implementation's measured results recorded on 18 October 2026. It is a complete draft for stakeholder validation. Current-state facts come from public City pages. No stakeholder interviews have taken place, so the roles and needs below are assumptions to validate. For the full detail, see the [full pack](council-minutes-assistant-ba-pack.pdf) (80 pages).
 
 ## The problem and who it affects
 
@@ -55,17 +55,19 @@ These serve the three business requirements: **BR-01** reduce the time to find w
 
 | Measure | Proposed target | How the baseline will be measured |
 |---|---|---|
-| SM-01 Median time to find a council decision (BR-01) | At least 50% lower | Moderated sessions on the current portal, eight participants |
-| SM-02 Answers traceable to the official record (BR-02) | 100% cite it; at least 90% of citations support the claim | No answer-level traceability today |
-| SM-03 Users who could check the answer against the minutes (BR-02) | At least 80% agree | The same question asked about the current portal |
-| SM-04 Routine decision enquiries handled manually (BR-03) | 25% fewer within six months | Eight weeks of enquiry tagging before the pilot |
-| SM-05 Staff time per routine decision enquiry (BR-03) | 30% lower | Timed sample of at least 30 enquiries |
+| SM-01 Time to find a council decision (BR-01) | At least 50% lower | Moderated sessions, eight participants |
+| SM-02 Answers traceable to the record (BR-02) | 100% cite it; at least 90% of citations support the claim | No answer-level traceability today |
+| SM-03 Users able to check the answer (BR-02) | At least 80% agree | Same question about the current portal |
+| SM-04 Routine enquiries handled manually (BR-03) | 25% fewer within six months | Eight weeks of enquiry tagging |
+| SM-05 Staff time per routine enquiry (BR-03) | 30% lower | Timed sample of at least 30 enquiries |
 
-## How it will be accepted
+## Acceptance and measured results
 
 - **Backlog:** 26 user stories (90 points) in 7 epics, each with Gherkin acceptance criteria. Release 1 (MVP): 19 stories, 69 points.
-- **UAT:** 30 UAT test cases (22 High, 8 Medium) over two cycles, run by persona representatives, an assistive technology user and the ATIPP Coordinator. Each answer is judged twice because model output varies. All are "Not run".
-- **Automated checks:** 14 automated checks in the implementation ([Project A](https://github.com/mrw-soumik/stjohns-council-minutes-rag)) measure the thresholds. Results are "Pending", and none are claimed.
+- **UAT:** 30 UAT test cases (22 High, 8 Medium) over two cycles, run by persona representatives, an assistive technology user and the ATIPP Coordinator. All are "Not run": no human UAT has been performed yet.
+- **Automated checks:** 13 of the 14 automated checks met their thresholds in the implementation ([Project A](https://github.com/mrw-soumik/stjohns-council-minutes-rag)), with PA-02 report-only. Retrieval hit@5 was 0.954 against the 85% target (NFR-01). All 20 unanswerable questions were declined, and 90.2% of citations point to the correct agenda item (NFR-02). axe-core found 0 violations (NFR-05, automated part), and the local model costs USD 0 per answer (NFR-04).
+- **Not met:** NFR-03 answer time. The p95 was 12.82 s with 6 passages and 10.96 s with 4, against a 10 s target. Next steps: retrieve fewer passages, or use a smaller or hosted model, then re-measure.
+- **Deviation:** citations name the agenda item instead of the page number, because PDF downloads met a browser verification step (C-03, OQ-05).
 - **Traceability:** every one of the 14 functional and non-functional requirements traces to a business requirement, at least one user story and at least one UAT test case. 50 of the 52 detailed requirements are tested directly, and the build fails on any gap.
 
 ## Top three risks
@@ -78,11 +80,8 @@ These serve the three business requirements: **BR-01** reduce the time to find w
 
 ## Read more
 
-| Document | What it covers |
-|---|---|
-| [01 Business requirements document](01-business-requirements-document.md) | Stakeholders, current and future state, all requirements, data, business rules, risks and open questions |
-| [02 User stories and release plan](02-user-stories.md) | 26 stories with Gherkin criteria, prioritization and releases |
-| [03 UAT test plan](03-uat-test-plan.md) | Approach, entry and exit criteria, 30 test cases and the automated check mapping |
-| [04 Traceability matrix](04-traceability-matrix.md) and [CSV](traceability.csv) | Business requirement to story, test case and automated check |
-| [Full pack as one PDF](council-minutes-assistant-ba-pack.pdf) | All four documents with full-size diagrams (75 pages) |
-| [Process maps](diagrams/) | BPMN 2.0 models of the current and future state |
+| Document | What it covers | Document | What it covers |
+|---|---|---|---|
+| [01 Business requirements](01-business-requirements-document.md) | All requirements, stakeholders, data, rules, risks | [02 User stories](02-user-stories.md) | 26 stories, Gherkin criteria, release plan |
+| [03 UAT test plan](03-uat-test-plan.md) | 30 test cases; measured results by check | [04 Traceability matrix](04-traceability-matrix.md) ([CSV](traceability.csv)) | Requirement to story, test and check |
+| [Full pack as one PDF](council-minutes-assistant-ba-pack.pdf) | All four documents with full-size diagrams | [Process maps](diagrams/) | BPMN 2.0 models, current and future state |

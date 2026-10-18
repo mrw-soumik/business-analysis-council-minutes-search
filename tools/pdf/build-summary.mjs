@@ -18,6 +18,7 @@ const MAX_PAGES = 2;
 const summary = readFileSync(resolve(root, SRC), 'utf8');
 const brd = readFileSync(resolve(root, '01-business-requirements-document.md'), 'utf8');
 const rtm = readFileSync(resolve(root, '04-traceability-matrix.md'), 'utf8');
+const uat = readFileSync(resolve(root, '03-uat-test-plan.md'), 'utf8');
 const errors = [];
 
 const rows = (text, re) => text.split('\n')
@@ -69,7 +70,10 @@ const [sr] = num('Stakeholder requirements', /(\d+)/);
 const [tr] = num('Transition requirements', /(\d+)/);
 const [stories, points, r1s, r1p] = num('User stories (points)', /(\d+) \((\d+)\); Release 1: (\d+) stories, (\d+) points/);
 const [tests, high, medium] = num('UAT test cases', /(\d+) \((\d+) High, (\d+) Medium\)/);
-const [checks] = num('Project A automated checks', /(\d+)/);
+const [checks, checksMet] = num('Project A automated checks', /(\d+): (\d+) met their thresholds/);
+const section14 = uat.slice(uat.indexOf('## 14.'), uat.indexOf('## 15.'));
+const paRows = rows(section14, /^PA-\d{2}$/);
+const notMetReqs = [...new Set(paRows.filter((r) => /^Not met/.test(r[6] || '')).flatMap((r) => (r[2].match(/\b(?:FR|NFR)-\d{2}\b/g) || [])))];
 const verified = rtm.match(/- (\d+) of (\d+) detailed requirements are verified directly/);
 const epics = new Set([...readFileSync(resolve(root, '02-user-stories.md'), 'utf8').matchAll(/^\| (EP-\d{2}) \|/gm)].map((m) => m[1])).size;
 const expected = [
@@ -77,11 +81,24 @@ const expected = [
   `${stories} user stories (${points} points) in ${epics} epics`,
   `Release 1 (MVP): ${r1s} stories, ${r1p} points`,
   `${tests} UAT test cases (${high} High, ${medium} Medium)`,
-  `${checks} automated checks`,
+  `${checksMet} of the ${checks} automated checks met their thresholds`,
   `every one of the ${fr + nfr} functional and non-functional requirements traces to a business requirement, at least one user story and at least one UAT test case`,
   `${verified[1]} of the ${verified[2]} detailed requirements are tested directly`
 ];
 for (const e of expected) if (!summary.includes(e)) errors.push(`summary does not state: "${e}"`);
+
+// 5. Measured results: the not-met requirements are named, and every number in the results
+//    bullets appears in UAT plan section 14 (so no figure can be invented or mistyped).
+const brdVersion = (brd.match(/^\| Version \| ([\d.]+) /m) || [])[1];
+if (!brdVersion || !summary.includes(`version ${brdVersion}`)) errors.push(`summary does not name the pack version ${brdVersion}`);
+for (const r of notMetReqs) if (!/\*\*Not met:\*\*[^\n]*/.test(summary) || !summary.match(/\*\*Not met:\*\*[^\n]*/)[0].includes(r)) errors.push(`summary "Not met" bullet does not name ${r}`);
+for (const label of ['Automated checks', 'Not met']) {
+  const line = (summary.match(new RegExp(`^- \\*\\*${label}:\\*\\*.*$`, 'm')) || [])[0];
+  if (!line) { errors.push(`summary has no "${label}" bullet`); continue; }
+  for (const tok of line.replace(/\[[^\]]*\]\([^)]*\)/g, '').match(/\d+(?:\.\d+)?%?/g) || []) {
+    if (!section14.includes(tok)) errors.push(`"${label}" bullet quotes ${tok}, which is not in UAT plan section 14`);
+  }
+}
 
 if (errors.length) {
   console.error(`Summary consistency check FAILED with ${errors.length} error(s):`);
