@@ -5,7 +5,7 @@
 | Item | Value |
 |---|---|
 | Document ID | CMA-BA-04 |
-| Version | 0.9 (generated) |
+| Version | 0.9.1 (generated; Project A results recorded 18 October 2026) |
 | Author | Mostafa Rafiur Wasib |
 | Date | 17 October 2026 |
 | Machine-readable version | [traceability.csv](traceability.csv) (one row per requirement and per detailed requirement) |
@@ -17,19 +17,20 @@
 1. [How to read this matrix](#1-how-to-read-this-matrix)
 2. [Coverage summary](#2-coverage-summary)
 3. [Forward traceability](#3-forward-traceability)
-4. [Business requirement view](#4-business-requirement-view)
-5. [Backward traceability](#5-backward-traceability)
-6. [Detailed requirements without direct verification](#6-detailed-requirements-without-direct-verification)
-7. [Stakeholder requirements](#7-stakeholder-requirements)
-8. [Transition requirements](#8-transition-requirements)
-9. [Updating results from Project A](#9-updating-results-from-project-a)
+4. [Measured results from Project A](#4-measured-results-from-project-a)
+5. [Business requirement view](#5-business-requirement-view)
+6. [Backward traceability](#6-backward-traceability)
+7. [Detailed requirements without direct verification](#7-detailed-requirements-without-direct-verification)
+8. [Stakeholder requirements](#8-stakeholder-requirements)
+9. [Transition requirements](#9-transition-requirements)
+10. [Updating results from Project A](#10-updating-results-from-project-a)
 <!-- /toc -->
 
 ## 1. How to read this matrix
 
 Each row follows one chain: **business requirement** (why) to **functional or non-functional requirement** (what and how well) to **user stories** (how it is delivered) to **UAT test cases** (how the business accepts it) to **Project A automated checks** (how it is measured on every build). Requirement IDs are defined in [01-business-requirements-document.md](01-business-requirements-document.md), stories in [02-user-stories.md](02-user-stories.md), and UAT cases and automated checks (PA-nn) in [03-uat-test-plan.md](03-uat-test-plan.md).
 
-**Result** shows the measured outcome from Project A. All results are **Pending** until Project A publishes its evaluation report. No result is claimed in this pack.
+**Status** is the measured outcome from Project A for each requirement, recorded on 18 October 2026 from Project A's README and `eval/results` (UAT plan section 14). The figures are Project A's; this pack does not re-measure them. Automated results do not replace user acceptance: every UAT test case is still "Not run".
 
 ## 2. Coverage summary
 
@@ -43,7 +44,7 @@ Each row follows one chain: **business requirement** (why) to **functional or no
 | Business rules | 11 |
 | User stories (points) | 26 (90); Release 1: 19 stories, 69 points; Release 2: 7 stories, 21 points |
 | UAT test cases | 30 (22 High, 8 Medium), all Not run |
-| Project A automated checks | 14, all Pending |
+| Project A automated checks | 14: 13 met their thresholds (PA-02 report-only), 1 not met (PA-05) |
 
 **Checks performed by the build (all passed):**
 
@@ -51,28 +52,71 @@ Each row follows one chain: **business requirement** (why) to **functional or no
 - Every one of the 26 user stories is verified by at least one UAT test case, and its "Verified by" list matches the UAT plan.
 - Every UAT test case and automated check references valid stories and requirements, and each requirement a UAT case tests is satisfied by one of its stories.
 - Summary tables and detailed sections agree on priority, estimate, release and references.
-- 50 of 52 detailed requirements are verified directly by a UAT case or an automated check. The other 2 are listed in section 6 with how they are verified.
+- 50 of 52 detailed requirements are verified directly by a UAT case or an automated check. The other 2 are listed in section 7 with how they are verified.
+- Every check has a measured result and a valid status, and each requirement's status agrees with its checks (a requirement with a check that is not met cannot be marked met).
 
 ## 3. Forward traceability
 
-| Business requirement | Requirement | Priority | User stories | UAT test cases | Project A checks | Threshold | Result |
+| Business requirement | Requirement | Priority | User stories | UAT test cases | Project A checks | Threshold | Status |
 |---|---|---|---|---|---|---|---|
-| BR-01, BR-03 | **FR-01** Answer natural-language questions about Regular Council Meeting minutes | Must | US-01, US-04, US-05, US-06 | UAT-01, UAT-04, UAT-05, UAT-09, UAT-10 | PA-03 | PA-03: At least 90% | Pending |
-| BR-02 | **FR-02** Every answer cites meeting name, meeting date and page, and links to the official document | Must | US-07, US-08, US-09, US-12, US-25 | UAT-02, UAT-03, UAT-04, UAT-12, UAT-13, UAT-29 | PA-03, PA-11 | PA-03: At least 90%; PA-11: 100% of answers | Pending |
-| BR-02 | **FR-03** When the minutes do not contain the answer, say so instead of guessing | Must | US-02, US-03 | UAT-06, UAT-07, UAT-08 | PA-04 | PA-04: At least 80% | Pending |
-| BR-01 | **FR-04** Filter by meeting date range | Should | US-14 | UAT-16, UAT-17 | PA-12 | PA-12: 100% of filtered queries | Pending |
-| BR-02 | **FR-05** Show the retrieved source passages (short excerpts) next to the answer | Must | US-10 | UAT-11 | PA-13 | PA-13: 100% of excerpts | Pending |
-| BR-01 | **FR-06** Hybrid retrieval (keyword + semantic) so exact terms (by-law numbers, street names) and paraphrases both work | Must | US-12, US-13 | UAT-13, UAT-14, UAT-15 | PA-01 | PA-01: At least 85% | Pending |
-| BR-01, BR-02 | **FR-07** Ingest newly published minutes without manual editing (repeatable pipeline) | Must | US-15, US-16, US-17, US-18 | UAT-18, UAT-19, UAT-20 | PA-14 | PA-14: Pass | Pending |
-| BR-01, BR-02 | **NFR-01** Quality gate (retrieval): correct source page in the top 5 results (hit@5) for at least 85% of answerable evaluation questions | Must | US-19 | UAT-21 | PA-01, PA-02 | PA-01: At least 85%; PA-02: Report only | Pending |
-| BR-02 | **NFR-02** Quality gate (answers): at least 90% of answer citations point to a passage that supports the claim; at least 80% of unanswerable questions correctly declined | Must | US-20 | UAT-04 | PA-03, PA-04 | PA-03: At least 90%; PA-04: At least 80% | Pending |
-| BR-01 | **NFR-03** Performance: p95 end-to-end answer time under 10 seconds; search-only (demo) under 1 second after the page loads | Should | US-23 | UAT-27 | PA-05, PA-06 | PA-05: Under 10 seconds; PA-06: Under 1 second | Pending |
-| BR-03 | **NFR-04** Cost: average model cost per answer under CAD $0.05 (measured from API usage) | Must | US-24 | UAT-28 | PA-07 | PA-07: Under CAD $0.05 | Pending |
-| BR-01, BR-02 | **NFR-05** Accessibility: demo UI meets WCAG 2.1 AA (keyboard use, contrast, labels) | Must | US-21 | UAT-23, UAT-24, UAT-25 | PA-08 | PA-08: No serious or critical violations | Pending |
-| BR-02 | **NFR-06** Privacy: no accounts, no personal data collected; questions are not stored with identifiers (aligned with NL ATIPPA, 2015 principles) | Must | US-22, US-26 | UAT-26, UAT-30 | PA-09 | PA-09: Pass | Pending |
-| BR-02 | **NFR-07** Transparency: disclaimer, data coverage dates and model name visible in the UI | Must | US-11, US-17 | UAT-20, UAT-22 | PA-10 | PA-10: Pass | Pending |
+| BR-01, BR-03 | **FR-01** Answer natural-language questions about Regular Council Meeting minutes | Must | US-01, US-04, US-05, US-06 | UAT-01, UAT-04, UAT-05, UAT-09, UAT-10 | PA-03 | PA-03: At least 90% | Met |
+| BR-02 | **FR-02** Every answer cites meeting name, meeting date and page, and links to the official document | Must | US-07, US-08, US-09, US-12, US-25 | UAT-02, UAT-03, UAT-04, UAT-12, UAT-13, UAT-29 | PA-03, PA-11 | PA-03: At least 90%; PA-11: 100% of answers | Met with agenda-item citations |
+| BR-02 | **FR-03** When the minutes do not contain the answer, say so instead of guessing | Must | US-02, US-03 | UAT-06, UAT-07, UAT-08 | PA-04 | PA-04: At least 80% | Met |
+| BR-01 | **FR-04** Filter by meeting date range | Should | US-14 | UAT-16, UAT-17 | PA-12 | PA-12: 100% of filtered queries | Met |
+| BR-02 | **FR-05** Show the retrieved source passages (short excerpts) next to the answer | Must | US-10 | UAT-11 | PA-13 | PA-13: 100% of excerpts | Met |
+| BR-01 | **FR-06** Hybrid retrieval (keyword + semantic) so exact terms (by-law numbers, street names) and paraphrases both work | Must | US-12, US-13 | UAT-13, UAT-14, UAT-15 | PA-01 | PA-01: At least 85% | Met |
+| BR-01, BR-02 | **FR-07** Ingest newly published minutes without manual editing (repeatable pipeline) | Must | US-15, US-16, US-17, US-18 | UAT-18, UAT-19, UAT-20 | PA-14 | PA-14: Pass | Met |
+| BR-01, BR-02 | **NFR-01** Quality gate (retrieval): correct source page in the top 5 results (hit@5) for at least 85% of answerable evaluation questions | Must | US-19 | UAT-21 | PA-01, PA-02 | PA-01: At least 85%; PA-02: Report only | Met |
+| BR-02 | **NFR-02** Quality gate (answers): at least 90% of answer citations point to a passage that supports the claim; at least 80% of unanswerable questions correctly declined | Must | US-20 | UAT-04 | PA-03, PA-04 | PA-03: At least 90%; PA-04: At least 80% | Met |
+| BR-01 | **NFR-03** Performance: p95 end-to-end answer time under 10 seconds; search-only (demo) under 1 second after the page loads | Should | US-23 | UAT-27 | PA-05, PA-06 | PA-05: Under 10 seconds; PA-06: Under 1 second | Partly met |
+| BR-03 | **NFR-04** Cost: average model cost per answer under CAD $0.05 (measured from API usage) | Must | US-24 | UAT-28 | PA-07 | PA-07: Under CAD $0.05 | Met |
+| BR-01, BR-02 | **NFR-05** Accessibility: demo UI meets WCAG 2.1 AA (keyboard use, contrast, labels) | Must | US-21 | UAT-23, UAT-24, UAT-25 | PA-08 | PA-08: No serious or critical violations | Automated part met |
+| BR-02 | **NFR-06** Privacy: no accounts, no personal data collected; questions are not stored with identifiers (aligned with NL ATIPPA, 2015 principles) | Must | US-22, US-26 | UAT-26, UAT-30 | PA-09 | PA-09: Pass | Automated part met |
+| BR-02 | **NFR-07** Transparency: disclaimer, data coverage dates and model name visible in the UI | Must | US-11, US-17 | UAT-20, UAT-22 | PA-10 | PA-10: Pass | Met |
 
-## 4. Business requirement view
+## 4. Measured results from Project A
+
+Recorded on 18 October 2026 from Project A's README and `eval/results`. 13 of the 14 automated checks met their thresholds (PA-02 is report-only); PA-05 did not. Full detail is in UAT plan section 14.
+
+**By check**
+
+| Check | Requirements | Threshold | Measured result (Project A) | Status |
+|---|---|---|---|---|
+| **PA-01** | FR-06, NFR-01 | At least 85% | Hybrid hit@5 0.954 (95% CI 0.87 to 0.98) on 65 answerable questions; BM25 0.923 (exact-term questions 52 of 52, paraphrased 8 of 13); dense 0.923 | Met |
+| **PA-02** | NFR-01 | Report only | Hybrid hit@5 by year: 2023 0.966, 2024 0.917, 2025 1.000, 2026 0.917. By format: HTML only; PDF not applicable because of C-03 (Cloudflare challenge on PDF downloads, not bypassed) | Reported |
+| **PA-03** | FR-01, FR-02, NFR-02 | At least 90% | 90.2% of citations point to the gold agenda item; 80.5% to the exact gold passage; 92.7% support a statement on a read-through by an AI assistant (not a human review) | Met (by agenda item) |
+| **PA-04** | FR-03, NFR-02 | At least 80% | 20 of 20 unanswerable questions declined (100%) | Met |
+| **PA-05** | NFR-03 | Under 10 seconds | p95 answer time 12.82 s with 6 passages; 10.96 s with 4 (local Qwen3.5-9B on an Apple M3 Pro) | Not met |
+| **PA-06** | NFR-03 | Under 1 second | 28 to 35 ms per search after load; index ready 53 ms after navigation; query model 4.3 s on a first visit | Met |
+| **PA-07** | NFR-04 | Under CAD $0.05 | USD 0 per answer (local model) | Met |
+| **PA-08** | NFR-05 | No serious or critical violations | axe-core: 0 violations (desktop light, desktop dark, 390 px) | Met (automated part) |
+| **PA-09** | NFR-06 | Pass | Pass: no IP address or identifier in logs; server access log disabled | Met (automated part) |
+| **PA-10** | NFR-07 | Pass | Pass | Met |
+| **PA-11** | FR-02 | 100% of answers | 82 of 82 citations valid, each with meeting name, date, agenda item and an official URL | Met (agenda-item citations) |
+| **PA-12** | FR-04 | 100% of filtered queries | 0 passages outside the selected date range | Met |
+| **PA-13** | FR-05 | 100% of excerpts | All 1,371 published excerpts are verbatim and at most 80 characters (decisions only); published excerpt share 7.8% of the parsed text | Met |
+| **PA-14** | FR-07 | Pass | Pass | Met |
+
+**By requirement**
+
+| Requirement | Status | Based on | Notes and next steps |
+|---|---|---|---|
+| **FR-01** | Met | PA-03 | Answers cite their sources; 90.2% of citations point to the gold agenda item. Human UAT not run. |
+| **FR-02** | Met with agenda-item citations | PA-03, PA-11 | Citations give the agenda item instead of a page number, because PDF downloads are blocked (C-03). Page citations depend on an agreed access method (OQ-05). |
+| **FR-03** | Met | PA-04 | 20 of 20 unanswerable questions declined. |
+| **FR-04** | Met | PA-12 | No passage outside the selected date range. |
+| **FR-05** | Met | PA-13 | Published excerpts are at most 80 characters, within the 300-character limit. |
+| **FR-06** | Met | PA-01 | Hybrid hit@5 0.954. Subset results are reported for BM25 only (exact-term 52 of 52, paraphrased 8 of 13), so the combined retriever's paraphrase subset (FR-06.2) is still to be reported. |
+| **FR-07** | Met | PA-14 | Re-run creates no duplicates; log written; coverage updated. |
+| **NFR-01** | Met | PA-01, PA-02 | Hybrid hit@5 0.954 against the 85% target, on HTML minutes only. |
+| **NFR-02** | Met | PA-03, PA-04 | Citation target met by agenda item (90.2%) and refusal target met (100%). The 92.7% support figure comes from an AI read-through, not a human review, so UAT-04 remains the human check (NFR-02.1). |
+| **NFR-03** | Partly met | PA-05, PA-06 | Search-only time met. The p95 answer time was not met: 12.82 s with 6 passages and 10.96 s with 4. Next steps: retrieve fewer passages, use a smaller model or use a hosted model, then re-measure PA-05. |
+| **NFR-04** | Met | PA-07 | USD 0 per answer with a local model. Re-measure cost if a hosted model is adopted to meet NFR-03. |
+| **NFR-05** | Automated part met | PA-08 | Manual keyboard and screen reader checks remain (UAT-23 to UAT-25). |
+| **NFR-06** | Automated part met | PA-09 | Retention (NFR-06.3) is checked in UAT-26; the processing confirmation (NFR-06.5) is a go-live condition. |
+| **NFR-07** | Met | PA-10 | Disclaimer, coverage dates, model name and independence notice rendered. |
+
+## 5. Business requirement view
 
 | Business requirement | Functional requirements | Non-functional requirements | User stories | UAT test cases |
 |---|---|---|---|---|
@@ -80,7 +124,7 @@ Each row follows one chain: **business requirement** (why) to **functional or no
 | **BR-02** Increase trust and transparency: every answer is traceable to the official record. | FR-02, FR-03, FR-05, FR-07 | NFR-01, NFR-02, NFR-05, NFR-06, NFR-07 | US-02, US-03, US-07, US-08, US-09, US-10, US-11, US-12, US-15, US-16, US-17, US-18, US-19, US-20, US-21, US-22, US-25, US-26 | UAT-02, UAT-03, UAT-04, UAT-06, UAT-07, UAT-08, UAT-11, UAT-12, UAT-13, UAT-18, UAT-19, UAT-20, UAT-21, UAT-22, UAT-23, UAT-24, UAT-25, UAT-26, UAT-29, UAT-30 |
 | **BR-03** Reduce routine "what did council decide about X" enquiries handled manually (assumption to validate). | FR-01 | NFR-04 | US-01, US-04, US-05, US-06, US-24 | UAT-01, UAT-04, UAT-05, UAT-09, UAT-10, UAT-28 |
 
-## 5. Backward traceability
+## 6. Backward traceability
 
 Read from right to left: each UAT case, the stories it accepts, and the requirements and business requirements behind them.
 
@@ -117,7 +161,7 @@ Read from right to left: each UAT case, the stories it accepts, and the requirem
 | **UAT-29** Staff copies a citation into a reply | Medium | US-25 | FR-02.1, FR-02.2 | BR-02 |
 | **UAT-30** Report a wrong answer without personal information | High | US-26 | TR-07, NFR-06.1 | BR-02 |
 
-## 6. Detailed requirements without direct verification
+## 7. Detailed requirements without direct verification
 
 These detailed requirements are not referenced directly by a UAT case or an automated check. Their parent requirement is covered, and the note says how each one is verified.
 
@@ -126,7 +170,7 @@ These detailed requirements are not referenced directly by a UAT case or an auto
 | NFR-05.6 | Could | Answers use plain language (target: grade 8 reading level or lower, excluding quoted names and titles). | Could priority. Verified by a readability check of the question bank answers during UAT-04 review; not an exit criterion. |
 | NFR-06.5 | Must | Document where question text is processed (provider, region, retention and training terms) and confirm it with the ATIPP Coordinator before any production use. | Verified as a go-live condition: the ATIPP Coordinator confirms the processing arrangements before production use (TR-09). |
 
-## 7. Stakeholder requirements
+## 8. Stakeholder requirements
 
 | Stakeholder requirement | Stakeholder | Business requirements | Satisfied by | User stories |
 |---|---|---|---|---|
@@ -142,7 +186,7 @@ These detailed requirements are not referenced directly by a UAT case or an auto
 | **SR-10** Know how current the information is and how the answers are produced. | All users | BR-02 | NFR-07, FR-07 | US-11, US-15, US-16, US-17, US-18 |
 | **SR-11** Keep content current without manual editing, and know when quality drops or costs rise. | Product owner and maintainer | BR-01, BR-02, BR-03 | FR-07, NFR-01, NFR-02, NFR-04 | US-15, US-16, US-17, US-18, US-19, US-20, US-24 |
 
-## 8. Transition requirements
+## 9. Transition requirements
 
 Transition requirements are verified through transition activities rather than product UAT, except where a story implements them.
 
@@ -160,8 +204,10 @@ Transition requirements are verified through transition activities rather than p
 | **TR-10** Benefits review: repeat the SM-01 to SM-05 measurements at the end of the pilot and three and six months after launch. | Should | None | None | Benefits report to the sponsor. |
 | **TR-11** Handover: a runbook for ingestion, evaluation and incident response, kept with the code. | Should | None | None | A second person can run the pipeline using only the runbook. |
 
-## 9. Updating results from Project A
+## 10. Updating results from Project A
 
-1. When Project A publishes an evaluation report, record each measured value and the report version in the `project_a_result` column of `traceability.csv` and in the Result column of the UAT plan, section 14.
-2. Align the PA check IDs with the test names used in Project A if they differ.
-3. Re-run `npm run trace` in the `tools` folder to rebuild this matrix and repeat the coverage checks.
+The first results were recorded on 18 October 2026. After each new Project A evaluation run:
+
+1. Copy each measured value and its status (Met, Not met or Reported) into UAT plan section 14.1, and update the requirement status and notes in section 14.2.
+2. Re-run `npm run trace` in the `tools` folder. It regenerates `traceability.csv` and this matrix, and fails if a requirement's status contradicts its checks. Do not edit either file by hand.
+3. Re-run `npm run summary` and `npm run pdf` so that the two-page summary and the full pack carry the same figures.

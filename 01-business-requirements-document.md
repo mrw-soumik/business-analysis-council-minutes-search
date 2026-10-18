@@ -11,7 +11,7 @@
 | Document | Business Requirements Document (BRD) |
 | Document ID | CMA-BA-01 |
 | Product | St. John's Council Minutes Assistant |
-| Version | 0.9 (complete draft for stakeholder validation) |
+| Version | 0.9.1 (complete draft for stakeholder validation) |
 | Status | Draft, not baselined |
 | Author | Mostafa Rafiur Wasib (business analyst) |
 | Date | 17 October 2026 |
@@ -24,6 +24,7 @@
 | Version | Date | Author | Change |
 |---|---|---|---|
 | 0.9 | 2026-10-17 | Mostafa Rafiur Wasib | Complete draft based on public information and document analysis. Elicitation sessions not yet held. |
+| 0.9.1 | 2026-10-18 | Mostafa Rafiur Wasib | Recorded Project A's measured results in the UAT plan (section 14) and the traceability matrix. FR-05.1 acceptance wording notes the 80-character excerpt limit that PA-13 checks. No requirement changed. |
 
 The next version (1.0) is the baseline, issued after the validation activities in section 5.5 and sign-off in section 17.
 
@@ -475,7 +476,7 @@ A scheduled pipeline checks the portal for newly published minutes. It indexes t
 
 | ID | Requirement | Priority | Acceptance criteria |
 |---|---|---|---|
-| FR-05.1 | Show up to five excerpts, each 300 characters or fewer, copied verbatim from the minutes, with an ellipsis where shortened. | Must | UAT-11. Every excerpt is 300 characters or fewer and is a verbatim substring of its source (PA-13). |
+| FR-05.1 | Show up to five excerpts, each 300 characters or fewer, copied verbatim from the minutes, with an ellipsis where shortened. | Must | UAT-11. Every excerpt is a verbatim substring of its source and within the 300-character limit. PA-13 checks the stricter limit used by the published demo: at most 80 characters. |
 | FR-05.2 | Label each excerpt with meeting name, date and page (or item) and link it to the official document. | Must | UAT-11. |
 | FR-05.3 | Number the citation markers in the answer and match them to the excerpts. | Should | UAT-11. |
 
@@ -728,7 +729,7 @@ A scheduled pipeline checks the portal for newly published minutes. It indexes t
 |---|---|---|
 | D-01 | eSCRIBE portal availability and stable listing structure | Ingestion fails; coverage becomes stale (R-08) |
 | D-02 | Model and embedding API availability, pricing and versions | Answers unavailable or more costly (R-09, R-10) |
-| D-03 | Project A evaluation results to complete the traceability matrix | Quality gates unverified; go-live blocked |
+| D-03 | Project A evaluation results for each release (first results recorded 18 October 2026) | Quality gates unverified; go-live blocked |
 | D-04 | Stakeholder availability for elicitation, pilot and UAT | Assumptions remain unvalidated |
 | D-05 | An agreed access method for minutes PDFs (OQ-05) | Page-level citations limited to HTML minutes or manual downloads |
 

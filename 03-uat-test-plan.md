@@ -5,13 +5,13 @@
 | Item | Value |
 |---|---|
 | Document ID | CMA-BA-03 |
-| Version | 0.9 (draft for review) |
+| Version | 0.9.1 (draft for review; Project A results recorded 18 October 2026) |
 | Author | Mostafa Rafiur Wasib (UAT lead) |
 | Date | 17 October 2026 |
 | Tests | Release 1 (MVP) and Release 2 stories in [02-user-stories.md](02-user-stories.md) |
 | Requirements | [01-business-requirements-document.md](01-business-requirements-document.md) |
 | Traceability | [04-traceability-matrix.md](04-traceability-matrix.md) and [traceability.csv](traceability.csv) |
-| Execution status | Not started. All test cases are "Not run" and all automated check results are "Pending". |
+| Execution status | UAT not started: all 30 test cases are "Not run". Project A's automated check results were recorded on 18 October 2026 (section 14): 13 of the 14 checks met their thresholds, and PA-05 (NFR-03 answer time) did not. |
 
 <!-- toc -->
 **Contents**
@@ -642,24 +642,47 @@ Dates are set when the UAT environment is confirmed. Durations are suggestions.
 
 ## 14. Automated checks in Project A
 
-These checks belong to the implementation's evaluation suite in [Project A](https://github.com/mrw-soumik/stjohns-council-minutes-rag). The check IDs are proposed by this pack and will be aligned with Project A's own test names when its evaluation report is published. Until then **every result is Pending**: no result is claimed here.
+These checks belong to the implementation's evaluation suite in [Project A](https://github.com/mrw-soumik/stjohns-council-minutes-rag). The measured results below are copied exactly from Project A's README and `eval/results`, and were recorded in this pack on 18 October 2026. This pack does not re-measure them. Automated results do not replace user acceptance: all 30 UAT test cases remain "Not run", because no human UAT has been performed.
 
-| Check ID | Automated check | Requirements | Threshold | Related UAT | Result |
-|---|---|---|---|---|---|
-| PA-01 | Retrieval evaluation: hit@5 on answerable questions, overall and for exact-term and paraphrase subsets; keyword-only, semantic-only and combined | NFR-01, NFR-01.1, NFR-01.3, FR-06.1, FR-06.2, FR-06.3 | At least 85% | UAT-13, UAT-14, UAT-15, UAT-21 | Pending |
-| PA-02 | Retrieval evaluation by year and by format (PDF, HTML) | NFR-01.3 | Report only | UAT-21 | Pending |
-| PA-03 | Answer evaluation: share of citations that support their claim | NFR-02, NFR-02.1, NFR-02.2, FR-02.4, FR-01.2 | At least 90% | UAT-04 | Pending |
-| PA-04 | Answer evaluation: share of unanswerable questions declined | NFR-02, NFR-02.2, FR-03.1 | At least 80% | UAT-06, UAT-08 | Pending |
-| PA-05 | Latency benchmark: p95 end-to-end answer time | NFR-03, NFR-03.1 | Under 10 seconds | UAT-27 | Pending |
-| PA-06 | Search-only demo: time to results after page load | NFR-03, NFR-03.2 | Under 1 second | UAT-27 | Pending |
-| PA-07 | Cost report: average model cost per answer from API usage, in CAD | NFR-04, NFR-04.2 | Under CAD $0.05 | UAT-28 | Pending |
-| PA-08 | Automated accessibility scan of the UI (for example axe-core) | NFR-05, NFR-05.2, NFR-05.3 | No serious or critical violations | UAT-23, UAT-24, UAT-25 | Pending |
-| PA-09 | Privacy test: application logs contain no IP address or other identifier | NFR-06, NFR-06.2 | Pass | UAT-26 | Pending |
-| PA-10 | UI test: disclaimer, coverage dates, model name and independence notice rendered | NFR-07, NFR-07.1, NFR-07.2, NFR-07.3, NFR-07.4 | Pass | UAT-22 | Pending |
-| PA-11 | Citation tests: every answer other than "not found" has at least one citation with meeting name, date, page or item and a valid official URL | FR-02, FR-02.1, FR-02.2, FR-02.3 | 100% of answers | UAT-02, UAT-03, UAT-12 | Pending |
-| PA-12 | Date filter tests: no retrieved passage outside the selected range | FR-04, FR-04.3 | 100% of filtered queries | UAT-16 | Pending |
-| PA-13 | Excerpt tests: every excerpt is 300 characters or fewer and a verbatim substring of its source | FR-05, FR-05.1 | 100% of excerpts | UAT-11 | Pending |
-| PA-14 | Ingestion tests: re-run creates no duplicates; log written; coverage updated | FR-07, FR-07.2, FR-07.3 | Pass | UAT-19, UAT-20 | Pending |
+**Summary:** 13 of the 14 automated checks met their thresholds (PA-02 is report-only). PA-05, the p95 answer time for NFR-03, did not.
+
+### 14.1 Results by check
+
+| Check ID | Automated check | Requirements | Threshold | Related UAT | Measured result (Project A) | Status |
+|---|---|---|---|---|---|---|
+| PA-01 | Retrieval evaluation: hit@5 on answerable questions, overall and for exact-term and paraphrase subsets; keyword-only, semantic-only and combined | NFR-01, NFR-01.1, NFR-01.3, FR-06.1, FR-06.2, FR-06.3 | At least 85% | UAT-13, UAT-14, UAT-15, UAT-21 | Hybrid hit@5 0.954 (95% CI 0.87 to 0.98) on 65 answerable questions; BM25 0.923 (exact-term questions 52 of 52, paraphrased 8 of 13); dense 0.923 | Met |
+| PA-02 | Retrieval evaluation by year and by format (PDF, HTML) | NFR-01.3 | Report only | UAT-21 | Hybrid hit@5 by year: 2023 0.966, 2024 0.917, 2025 1.000, 2026 0.917. By format: HTML only; PDF not applicable because of C-03 (Cloudflare challenge on PDF downloads, not bypassed) | Reported |
+| PA-03 | Answer evaluation: share of citations that support their claim | NFR-02, NFR-02.1, NFR-02.2, FR-02.4, FR-01.2 | At least 90% | UAT-04 | 90.2% of citations point to the gold agenda item; 80.5% to the exact gold passage; 92.7% support a statement on a read-through by an AI assistant (not a human review) | Met (by agenda item) |
+| PA-04 | Answer evaluation: share of unanswerable questions declined | NFR-02, NFR-02.2, FR-03.1 | At least 80% | UAT-06, UAT-08 | 20 of 20 unanswerable questions declined (100%) | Met |
+| PA-05 | Latency benchmark: p95 end-to-end answer time | NFR-03, NFR-03.1 | Under 10 seconds | UAT-27 | p95 answer time 12.82 s with 6 passages; 10.96 s with 4 (local Qwen3.5-9B on an Apple M3 Pro) | Not met |
+| PA-06 | Search-only demo: time to results after page load | NFR-03, NFR-03.2 | Under 1 second | UAT-27 | 28 to 35 ms per search after load; index ready 53 ms after navigation; query model 4.3 s on a first visit | Met |
+| PA-07 | Cost report: average model cost per answer from API usage, in CAD | NFR-04, NFR-04.2 | Under CAD $0.05 | UAT-28 | USD 0 per answer (local model) | Met |
+| PA-08 | Automated accessibility scan of the UI (for example axe-core) | NFR-05, NFR-05.2, NFR-05.3 | No serious or critical violations | UAT-23, UAT-24, UAT-25 | axe-core: 0 violations (desktop light, desktop dark, 390 px) | Met (automated part) |
+| PA-09 | Privacy test: application logs contain no IP address or other identifier | NFR-06, NFR-06.2 | Pass | UAT-26 | Pass: no IP address or identifier in logs; server access log disabled | Met (automated part) |
+| PA-10 | UI test: disclaimer, coverage dates, model name and independence notice rendered | NFR-07, NFR-07.1, NFR-07.2, NFR-07.3, NFR-07.4 | Pass | UAT-22 | Pass | Met |
+| PA-11 | Citation tests: every answer other than "not found" has at least one citation with meeting name, date, page or item and a valid official URL | FR-02, FR-02.1, FR-02.2, FR-02.3 | 100% of answers | UAT-02, UAT-03, UAT-12 | 82 of 82 citations valid, each with meeting name, date, agenda item and an official URL | Met (agenda-item citations) |
+| PA-12 | Date filter tests: no retrieved passage outside the selected range | FR-04, FR-04.3 | 100% of filtered queries | UAT-16 | 0 passages outside the selected date range | Met |
+| PA-13 | Excerpt tests: every published excerpt is at most 80 characters and a verbatim substring of its source | FR-05, FR-05.1 | 100% of excerpts | UAT-11 | All 1,371 published excerpts are verbatim and at most 80 characters (decisions only); published excerpt share 7.8% of the parsed text | Met |
+| PA-14 | Ingestion tests: re-run creates no duplicates; log written; coverage updated | FR-07, FR-07.2, FR-07.3 | Pass | UAT-19, UAT-20 | Pass | Met |
+
+### 14.2 Results by requirement
+
+| Requirement | Status | Based on | Notes and next steps |
+|---|---|---|---|
+| FR-01 | Met | PA-03 | Answers cite their sources; 90.2% of citations point to the gold agenda item. Human UAT not run. |
+| FR-02 | Met with agenda-item citations | PA-03, PA-11 | Citations give the agenda item instead of a page number, because PDF downloads are blocked (C-03). Page citations depend on an agreed access method (OQ-05). |
+| FR-03 | Met | PA-04 | 20 of 20 unanswerable questions declined. |
+| FR-04 | Met | PA-12 | No passage outside the selected date range. |
+| FR-05 | Met | PA-13 | Published excerpts are at most 80 characters, within the 300-character limit. |
+| FR-06 | Met | PA-01 | Hybrid hit@5 0.954. Subset results are reported for BM25 only (exact-term 52 of 52, paraphrased 8 of 13), so the combined retriever's paraphrase subset (FR-06.2) is still to be reported. |
+| FR-07 | Met | PA-14 | Re-run creates no duplicates; log written; coverage updated. |
+| NFR-01 | Met | PA-01, PA-02 | Hybrid hit@5 0.954 against the 85% target, on HTML minutes only. |
+| NFR-02 | Met | PA-03, PA-04 | Citation target met by agenda item (90.2%) and refusal target met (100%). The 92.7% support figure comes from an AI read-through, not a human review, so UAT-04 remains the human check (NFR-02.1). |
+| NFR-03 | Partly met | PA-05, PA-06 | Search-only time met. The p95 answer time was not met: 12.82 s with 6 passages and 10.96 s with 4. Next steps: retrieve fewer passages, use a smaller model or use a hosted model, then re-measure PA-05. |
+| NFR-04 | Met | PA-07 | USD 0 per answer with a local model. Re-measure cost if a hosted model is adopted to meet NFR-03. |
+| NFR-05 | Automated part met | PA-08 | Manual keyboard and screen reader checks remain (UAT-23 to UAT-25). |
+| NFR-06 | Automated part met | PA-09 | Retention (NFR-06.3) is checked in UAT-26; the processing confirmation (NFR-06.5) is a go-live condition. |
+| NFR-07 | Met | PA-10 | Disclaimer, coverage dates, model name and independence notice rendered. |
 
 Automated scans find only part of the accessibility issues, so the manual cases UAT-23 to UAT-25 remain required.
 

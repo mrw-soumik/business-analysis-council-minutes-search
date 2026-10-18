@@ -108,7 +108,19 @@ while ((m = uatHeadRe.exec(uat))) {
 }
 const paRows = tableRows(uat).filter((r) => /^PA-\d{2}$/.test(r[0]));
 const pa = new Map();
-for (const r of paRows) pa.set(r[0], { id: r[0], check: r[1], reqs: ids(r[2]), threshold: r[3], uat: ids(r[4]), result: r[5] });
+for (const r of paRows) {
+  if (r.length !== 7) { err(`UAT: check row ${r[0]} has ${r.length} columns (expected 7)`); continue; }
+  pa.set(r[0], { id: r[0], check: r[1], reqs: ids(r[2]), threshold: r[3], uat: ids(r[4]), measured: r[5], status: r[6] });
+}
+// Results by requirement (UAT plan section 14.2): Requirement | Status | Based on | Notes and next steps
+const reqResult = new Map();
+for (const r of tableRows(uat).filter((x) => /^(?:FR|NFR)-\d{2}$/.test(x[0]))) {
+  if (r.length !== 4) { err(`UAT: result row ${r[0]} has ${r.length} columns (expected 4)`); continue; }
+  reqResult.set(r[0], { status: r[1], basedOn: ids(r[2]), notes: r[3] });
+}
+const CHECK_STATUS = /^(Met|Not met|Reported)(?: \([^)]+\))?$/;
+const REQ_STATUS = new Set(['Met', 'Met with agenda-item citations', 'Partly met', 'Not met', 'Automated part met']);
+const baseStatus = (st) => (st.startsWith('Not met') ? 'Not met' : st.startsWith('Reported') ? 'Reported' : 'Met');
 
 // ---------------------------------------------------------------- reference checks
 const known = (id) => req.has(id) || story.has(id) || test.has(id) || pa.has(id);
@@ -145,7 +157,9 @@ for (const p of pa.values()) {
   if (!p.reqs.length) err(`${p.id} references no requirement`);
   for (const id of p.reqs) if (!req.has(id)) err(`${p.id} references unknown requirement ${id}`);
   for (const id of p.uat) if (!test.has(id)) err(`${p.id} references unknown UAT case ${id}`);
-  if (p.result !== 'Pending') err(`${p.id} result should be "Pending" until Project A publishes results`);
+  if (!p.measured || /^pending$/i.test(p.measured)) err(`${p.id} has no measured result`);
+  if (!CHECK_STATUS.test(p.status)) err(`${p.id} status "${p.status}" must be Met, Not met or Reported, with an optional qualifier`);
+  if (p.threshold === 'Report only' && baseStatus(p.status) !== 'Reported') err(`${p.id} is report-only, so its status must be Reported`);
 }
 for (const s of srRows) for (const id of [...ids(s[4]), ...ids(s[5])]) if (!req.has(id)) err(`${s[0]} references unknown ${id}`);
 for (const r of topLevel) {
@@ -168,6 +182,21 @@ const parentRows = topLevel.map((r) => {
   if (!t.length) err(`${r.id} has no UAT test case`);
   return { ...r, stories: s, tests: t, checks: c };
 });
+for (const p of parentRows) {
+  const rr = reqResult.get(p.id);
+  if (!rr) { err(`${p.id} has no row in UAT plan section 14.2 (results by requirement)`); continue; }
+  if (!REQ_STATUS.has(rr.status)) err(`${p.id} status "${rr.status}" is not one of: ${[...REQ_STATUS].join(', ')}`);
+  if (rr.basedOn.slice().sort(byId).join() !== p.checks.join()) err(`${p.id}: "Based on" (${rr.basedOn.join(', ')}) differs from its linked checks (${p.checks.join(', ')})`);
+  const statuses = p.checks.map((id) => pa.get(id)?.status || '');
+  const anyNotMet = statuses.some((x) => baseStatus(x) === 'Not met');
+  const anyMet = statuses.some((x) => baseStatus(x) === 'Met');
+  const automatedOnly = statuses.some((x) => /\(automated part\)/.test(x));
+  if (anyNotMet && rr.status !== (anyMet ? 'Partly met' : 'Not met')) err(`${p.id}: a linked check is not met, so the status should be "${anyMet ? 'Partly met' : 'Not met'}" (found "${rr.status}")`);
+  if (!anyNotMet && (rr.status === 'Partly met' || rr.status === 'Not met')) err(`${p.id}: all linked checks are met, but the status is "${rr.status}"`);
+  if (!anyNotMet && automatedOnly && rr.status !== 'Automated part met') err(`${p.id}: its check covers only the automated part, so the status should be "Automated part met"`);
+  p.result = rr;
+}
+for (const id of reqResult.keys()) if (!parentRows.some((p) => p.id === id)) err(`UAT plan section 14.2 lists unknown requirement ${id}`);
 const detailRows = detailed.map((r) => ({
   ...r,
   traces: req.get(r.parent).traces,
@@ -183,12 +212,16 @@ const csvCell = (v) => {
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 const thresholdFor = (checkIds) => checkIds.map((id) => `${id}: ${pa.get(id).threshold}`);
-const header = ['business_requirements', 'requirement_id', 'detailed_requirement_id', 'requirement_type', 'priority', 'requirement', 'stakeholder_requirements', 'user_stories', 'uat_test_cases', 'project_a_checks', 'acceptance_threshold', 'project_a_result'];
+// Measured results contain semicolons, so checks are separated with ' | ' in the CSV.
+const measuredFor = (checkIds) => checkIds.map((id) => `${id}: ${pa.get(id).measured}`).join(' | ');
+const statusFor = (checkIds) => checkIds.map((id) => `${id}: ${pa.get(id).status}`);
+const header = ['business_requirements', 'requirement_id', 'detailed_requirement_id', 'requirement_type', 'priority', 'requirement', 'stakeholder_requirements', 'user_stories', 'uat_test_cases', 'project_a_checks', 'acceptance_threshold', 'project_a_result', 'project_a_status', 'notes'];
 const lines = [header.join(',')];
 for (const p of parentRows) {
-  lines.push([p.traces, p.id, '', p.type, p.priority, p.text, p.srs, p.stories, p.tests, p.checks, thresholdFor(p.checks), p.checks.length ? 'Pending' : 'Not applicable (manual UAT only)'].map(csvCell).join(','));
+  lines.push([p.traces, p.id, '', p.type, p.priority, p.text, p.srs, p.stories, p.tests, p.checks, thresholdFor(p.checks), measuredFor(p.checks), p.result?.status ?? '', p.result?.notes ?? ''].map(csvCell).join(','));
   for (const d of detailRows.filter((x) => x.parent === p.id)) {
-    lines.push([d.traces, d.parent, d.id, d.type, d.priority, d.text, '', d.stories, d.tests, d.checks, thresholdFor(d.checks), d.checks.length ? 'Pending' : (d.tests.length ? 'Not applicable (manual UAT only)' : 'Not yet verified')].map(csvCell).join(','));
+    const noCheck = d.tests.length ? 'Not applicable (manual UAT only)' : 'Not yet verified';
+    lines.push([d.traces, d.parent, d.id, d.type, d.priority, d.text, '', d.stories, d.tests, d.checks, thresholdFor(d.checks), d.checks.length ? measuredFor(d.checks) : noCheck, d.checks.length ? statusFor(d.checks) : noCheck, ''].map(csvCell).join(','));
   }
 }
 writeFileSync(resolve(root, 'traceability.csv'), lines.join('\n') + '\n', 'utf8');
@@ -211,7 +244,10 @@ const counts = {
   tests: test.size,
   high: [...test.values()].filter((t) => t.priority === 'High').length,
   medium: [...test.values()].filter((t) => t.priority === 'Medium').length,
-  checks: pa.size
+  checks: pa.size,
+  checksMet: [...pa.values()].filter((x) => baseStatus(x.status) !== 'Not met').length,
+  checksNotMet: [...pa.values()].filter((x) => baseStatus(x.status) === 'Not met'),
+  reportOnly: [...pa.values()].filter((x) => baseStatus(x.status) === 'Reported')
 };
 
 const md = [];
@@ -222,7 +258,7 @@ md.push('');
 md.push('| Item | Value |');
 md.push('|---|---|');
 md.push('| Document ID | CMA-BA-04 |');
-md.push('| Version | 0.9 (generated) |');
+md.push('| Version | 0.9.1 (generated; Project A results recorded 18 October 2026) |');
 md.push('| Author | Mostafa Rafiur Wasib |');
 md.push('| Date | 17 October 2026 |');
 md.push('| Machine-readable version | [traceability.csv](traceability.csv) (one row per requirement and per detailed requirement) |');
@@ -234,19 +270,20 @@ md.push('');
 md.push('1. [How to read this matrix](#1-how-to-read-this-matrix)');
 md.push('2. [Coverage summary](#2-coverage-summary)');
 md.push('3. [Forward traceability](#3-forward-traceability)');
-md.push('4. [Business requirement view](#4-business-requirement-view)');
-md.push('5. [Backward traceability](#5-backward-traceability)');
-md.push('6. [Detailed requirements without direct verification](#6-detailed-requirements-without-direct-verification)');
-md.push('7. [Stakeholder requirements](#7-stakeholder-requirements)');
-md.push('8. [Transition requirements](#8-transition-requirements)');
-md.push('9. [Updating results from Project A](#9-updating-results-from-project-a)');
+md.push('4. [Measured results from Project A](#4-measured-results-from-project-a)');
+md.push('5. [Business requirement view](#5-business-requirement-view)');
+md.push('6. [Backward traceability](#6-backward-traceability)');
+md.push('7. [Detailed requirements without direct verification](#7-detailed-requirements-without-direct-verification)');
+md.push('8. [Stakeholder requirements](#8-stakeholder-requirements)');
+md.push('9. [Transition requirements](#9-transition-requirements)');
+md.push('10. [Updating results from Project A](#10-updating-results-from-project-a)');
 md.push('<!-- /toc -->');
 md.push('');
 md.push('## 1. How to read this matrix');
 md.push('');
 md.push('Each row follows one chain: **business requirement** (why) to **functional or non-functional requirement** (what and how well) to **user stories** (how it is delivered) to **UAT test cases** (how the business accepts it) to **Project A automated checks** (how it is measured on every build). Requirement IDs are defined in [01-business-requirements-document.md](01-business-requirements-document.md), stories in [02-user-stories.md](02-user-stories.md), and UAT cases and automated checks (PA-nn) in [03-uat-test-plan.md](03-uat-test-plan.md).');
 md.push('');
-md.push('**Result** shows the measured outcome from Project A. All results are **Pending** until Project A publishes its evaluation report. No result is claimed in this pack.');
+md.push('**Status** is the measured outcome from Project A for each requirement, recorded on 18 October 2026 from Project A\'s README and `eval/results` (UAT plan section 14). The figures are Project A\'s; this pack does not re-measure them. Automated results do not replace user acceptance: every UAT test case is still "Not run".');
 md.push('');
 md.push('## 2. Coverage summary');
 md.push('');
@@ -260,7 +297,7 @@ md.push(`| Transition requirements | ${counts.tr} |`);
 md.push(`| Business rules | ${counts.brl} |`);
 md.push(`| User stories (points) | ${counts.stories} (${counts.points}); Release 1: ${counts.r1.length} stories, ${counts.r1.reduce((a, s) => a + s.points, 0)} points; Release 2: ${counts.r2.length} stories, ${counts.r2.reduce((a, s) => a + s.points, 0)} points |`);
 md.push(`| UAT test cases | ${counts.tests} (${counts.high} High, ${counts.medium} Medium), all Not run |`);
-md.push(`| Project A automated checks | ${counts.checks}, all Pending |`);
+md.push(`| Project A automated checks | ${counts.checks}: ${counts.checksMet} met their thresholds (${counts.reportOnly.map((x) => x.id).join(', ')} report-only), ${counts.checksNotMet.length} not met (${counts.checksNotMet.map((x) => x.id).join(', ') || 'none'}) |`);
 md.push('');
 md.push('**Checks performed by the build (all passed):**');
 md.push('');
@@ -268,18 +305,35 @@ md.push(`- Every one of the ${parentRows.length} functional and non-functional r
 md.push(`- Every one of the ${counts.stories} user stories is verified by at least one UAT test case, and its "Verified by" list matches the UAT plan.`);
 md.push('- Every UAT test case and automated check references valid stories and requirements, and each requirement a UAT case tests is satisfied by one of its stories.');
 md.push('- Summary tables and detailed sections agree on priority, estimate, release and references.');
-md.push(`- ${detailRows.length - unverified.length} of ${detailRows.length} detailed requirements are verified directly by a UAT case or an automated check. The other ${unverified.length} are listed in section 6 with how they are verified.`);
+md.push(`- ${detailRows.length - unverified.length} of ${detailRows.length} detailed requirements are verified directly by a UAT case or an automated check. The other ${unverified.length} are listed in section 7 with how they are verified.`);
+md.push('- Every check has a measured result and a valid status, and each requirement\'s status agrees with its checks (a requirement with a check that is not met cannot be marked met).');
 md.push('');
 md.push('## 3. Forward traceability');
 md.push('');
-md.push('| Business requirement | Requirement | Priority | User stories | UAT test cases | Project A checks | Threshold | Result |');
+md.push('| Business requirement | Requirement | Priority | User stories | UAT test cases | Project A checks | Threshold | Status |');
 md.push('|---|---|---|---|---|---|---|---|');
 for (const p of parentRows) {
   const thr = p.checks.length ? p.checks.map((id) => `${id}: ${pa.get(id).threshold}`).join('; ') : 'Manual UAT only';
-  md.push(`| ${list(p.traces)} | **${p.id}** ${p.text} | ${p.priority} | ${list(p.stories)} | ${list(p.tests)} | ${list(p.checks)} | ${thr} | ${p.checks.length ? 'Pending' : 'Not applicable'} |`);
+  md.push(`| ${list(p.traces)} | **${p.id}** ${p.text} | ${p.priority} | ${list(p.stories)} | ${list(p.tests)} | ${list(p.checks)} | ${thr} | ${p.result?.status ?? 'Not applicable'} |`);
 }
 md.push('');
-md.push('## 4. Business requirement view');
+md.push('## 4. Measured results from Project A');
+md.push('');
+md.push(`Recorded on 18 October 2026 from Project A\'s README and \`eval/results\`. ${counts.checksMet} of the ${counts.checks} automated checks met their thresholds (${counts.reportOnly.map((x) => x.id).join(', ')} is report-only); ${counts.checksNotMet.map((x) => x.id).join(', ')} did not. Full detail is in UAT plan section 14.`);
+md.push('');
+md.push('**By check**');
+md.push('');
+md.push('| Check | Requirements | Threshold | Measured result (Project A) | Status |');
+md.push('|---|---|---|---|---|');
+for (const x of [...pa.values()].sort((a, b) => byId(a.id, b.id))) md.push(`| **${x.id}** | ${list(uniq(x.reqs.map(parentOf)).sort(byId))} | ${x.threshold} | ${x.measured} | ${x.status} |`);
+md.push('');
+md.push('**By requirement**');
+md.push('');
+md.push('| Requirement | Status | Based on | Notes and next steps |');
+md.push('|---|---|---|---|');
+for (const p of parentRows) md.push(`| **${p.id}** | ${p.result?.status ?? ''} | ${list(p.result?.basedOn)} | ${p.result?.notes ?? ''} |`);
+md.push('');
+md.push('## 5. Business requirement view');
 md.push('');
 md.push('| Business requirement | Functional requirements | Non-functional requirements | User stories | UAT test cases |');
 md.push('|---|---|---|---|---|');
@@ -292,7 +346,7 @@ for (const br of brRows) {
   md.push(`| **${br[0]}** ${br[1]} | ${list(fr)} | ${list(nfr)} | ${list(st)} | ${list(ts)} |`);
 }
 md.push('');
-md.push('## 5. Backward traceability');
+md.push('## 6. Backward traceability');
 md.push('');
 md.push('Read from right to left: each UAT case, the stories it accepts, and the requirements and business requirements behind them.');
 md.push('');
@@ -309,7 +363,7 @@ for (const t of [...test.values()].sort((a, b) => byId(a.id, b.id))) {
   md.push(`| **${t.id}** ${t.title} | ${t.priority} | ${list(t.stories)} | ${list(t.reqs)} | ${brs.length ? brs.join(', ') : 'Via TR-07 (support process)'} |`);
 }
 md.push('');
-md.push('## 6. Detailed requirements without direct verification');
+md.push('## 7. Detailed requirements without direct verification');
 md.push('');
 const notes = {
   'NFR-05.6': 'Could priority. Verified by a readability check of the question bank answers during UAT-04 review; not an exit criterion.',
@@ -325,7 +379,7 @@ if (unverified.length) {
   md.push('None. Every detailed requirement is verified by a UAT case or an automated check.');
 }
 md.push('');
-md.push('## 7. Stakeholder requirements');
+md.push('## 8. Stakeholder requirements');
 md.push('');
 md.push('| Stakeholder requirement | Stakeholder | Business requirements | Satisfied by | User stories |');
 md.push('|---|---|---|---|---|');
@@ -335,7 +389,7 @@ for (const s of srRows) {
   md.push(`| **${s[0]}** ${s[2]} | ${s[1]} | ${list(ids(s[4]))} | ${list(sat)} | ${list(st)} |`);
 }
 md.push('');
-md.push('## 8. Transition requirements');
+md.push('## 9. Transition requirements');
 md.push('');
 md.push('Transition requirements are verified through transition activities rather than product UAT, except where a story implements them.');
 md.push('');
@@ -347,11 +401,13 @@ for (const r of trRows) {
   md.push(`| **${r[0]}** ${r[1]} | ${r[2]} | ${list(st)} | ${list(ts)} | ${r[3]} |`);
 }
 md.push('');
-md.push('## 9. Updating results from Project A');
+md.push('## 10. Updating results from Project A');
 md.push('');
-md.push('1. When Project A publishes an evaluation report, record each measured value and the report version in the `project_a_result` column of `traceability.csv` and in the Result column of the UAT plan, section 14.');
-md.push('2. Align the PA check IDs with the test names used in Project A if they differ.');
-md.push('3. Re-run `npm run trace` in the `tools` folder to rebuild this matrix and repeat the coverage checks.');
+md.push('The first results were recorded on 18 October 2026. After each new Project A evaluation run:');
+md.push('');
+md.push('1. Copy each measured value and its status (Met, Not met or Reported) into UAT plan section 14.1, and update the requirement status and notes in section 14.2.');
+md.push('2. Re-run `npm run trace` in the `tools` folder. It regenerates `traceability.csv` and this matrix, and fails if a requirement\'s status contradicts its checks. Do not edit either file by hand.');
+md.push('3. Re-run `npm run summary` and `npm run pdf` so that the two-page summary and the full pack carry the same figures.');
 md.push('');
 
 if (errors.length) {
