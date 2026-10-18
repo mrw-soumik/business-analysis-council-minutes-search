@@ -6,6 +6,7 @@ tools/build/
 # Never commit City of St. John's source documents (see README, "Copyright and data")
 *.pdf
 !council-minutes-assistant-ba-pack.pdf
+!council-minutes-assistant-ba-summary.pdf
 
 # OS and editor files
 .DS_Store

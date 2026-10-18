@@ -10,8 +10,9 @@
     "xsd:bpmn": "node bpmn/validate-xsd.mjs",
     "diagrams": "node diagrams/build-static-svgs.mjs && node diagrams/render-png.mjs",
     "trace": "node trace/build-traceability.mjs",
+    "summary": "node pdf/build-summary.mjs",
     "pdf": "node pdf/build-pdf.mjs",
-    "build": "npm run bpmn && npm run lint:bpmn && npm run diagrams && npm run trace && npm run pdf"
+    "build": "npm run bpmn && npm run lint:bpmn && npm run diagrams && npm run trace && npm run summary && npm run pdf"
   },
   "license": "UNLICENSED",
   "devDependencies": {
