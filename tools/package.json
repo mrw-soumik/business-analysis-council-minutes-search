@@ -12,7 +12,8 @@
     "trace": "node trace/build-traceability.mjs",
     "summary": "node pdf/build-summary.mjs",
     "pdf": "node pdf/build-pdf.mjs",
-    "build": "npm run bpmn && npm run lint:bpmn && npm run diagrams && npm run trace && npm run summary && npm run pdf"
+    "links": "node pdf/check-links.mjs",
+    "build": "npm run bpmn && npm run lint:bpmn && npm run diagrams && npm run trace && npm run summary && npm run pdf && npm run links"
   },
   "license": "UNLICENSED",
   "devDependencies": {

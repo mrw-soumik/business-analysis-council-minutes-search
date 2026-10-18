@@ -1,5 +1,7 @@
 # Business Analysis: St. John's Council Minutes Assistant
 
+**Start here: [2-page summary](00-executive-summary.md)** ([PDF](council-minutes-assistant-ba-summary.pdf)). For the deep dive, see the [full pack as one PDF](council-minutes-assistant-ba-pack.pdf) (75 pages) and the four documents listed below.
+
 A complete business analysis work sample for a public-sector AI product: the requirements, user stories, UAT plan, traceability and BPMN process maps for a service that answers plain-language questions about St. John's City Council decisions, with citations to the official minutes.
 
 > **Independent portfolio project.** Not affiliated with or endorsed by the City of St. John's. Source documents are © City of St. John's and are retrieved from the City's public meetings portal; this repository does not redistribute them.
@@ -20,7 +22,7 @@ This repository is the **business analysis** for that product, written to the st
 - **Hiring managers and recruiters** for Business Analyst and Business Systems Analyst roles: a realistic, end-to-end example of requirements work on an AI product in a public-sector setting.
 - **Delivery teams:** the requirements and acceptance tests that the implementation (Project A) is built and measured against.
 
-## Five-minute path
+## Five-minute path through the full pack
 
 1. **Executive summary:** [BRD section 1](01-business-requirements-document.md#1-executive-summary). The problem, the solution, scope and the decisions needed.
 2. **Process maps:** the [current state](diagrams/current-state.svg) with pain points, then the [future state](diagrams/future-state.svg). Both are BPMN 2.0 models.
@@ -32,6 +34,7 @@ This repository is the **business analysis** for that product, written to the st
 
 | Document | Contents |
 |---|---|
+| [00-executive-summary.md](00-executive-summary.md) and [its PDF](council-minutes-assistant-ba-summary.pdf) | Two-page summary: problem, scope, stakeholders, current and future state, the ten most important requirements, success measures, acceptance approach, top risks and links to everything else |
 | [01-business-requirements-document.md](01-business-requirements-document.md) | The core BRD: document control, executive summary, background, SMART success measures with baseline methods, scope, stakeholder register, power and interest grid, RACI, elicitation plan, proto-personas, current and future state with BPMN maps, gap analysis, requirements with IDs and acceptance criteria, data requirements and conceptual data model, business rules, transition requirements, assumptions, constraints and dependencies, risks (including AI, privacy and copyright risks), open questions, glossary and a blank sign-off table |
 | [02-user-stories.md](02-user-stories.md) | 7 epics and 26 INVEST user stories with Gherkin acceptance criteria, MoSCoW priority, relative estimates and the requirements each satisfies; prioritization rationale and a two-release plan |
 | [03-uat-test-plan.md](03-uat-test-plan.md) | UAT objectives, approach, entry and exit criteria, roles, environment, test data and question bank, defect severity and priority, schedule template, 30 test cases (all "Not run") and the mapping to Project A's automated checks (all "Pending") |
@@ -83,10 +86,10 @@ Requirements: Node.js 20 or later, Google Chrome (used through puppeteer-core; n
 ```sh
 cd tools
 npm ci
-npm run build        # BPMN models, validation, diagrams, traceability and the PDF
+npm run build        # BPMN models, validation, diagrams, traceability, both PDFs and the link check
 ```
 
-Individual steps: `npm run bpmn`, `npm run lint:bpmn`, `npm run xsd:bpmn`, `npm run diagrams`, `npm run trace`, `npm run pdf`. Set `CHROME_PATH` if Chrome is not in the default macOS location.
+Individual steps: `npm run bpmn`, `npm run lint:bpmn`, `npm run xsd:bpmn`, `npm run diagrams`, `npm run trace`, `npm run summary`, `npm run pdf`, `npm run links`. Set `CHROME_PATH` if Chrome is not in the default macOS location.
 
 To reproduce the current-state counts (reads only the portal's public meeting listing, at most one request per second, with a local cache):
 
@@ -97,16 +100,18 @@ python3 scripts/portal_snapshot.py --as-of 2026-10-17
 ## Repository structure
 
 ```text
-01-business-requirements-document.md   BRD (CMA-BA-01)
-02-user-stories.md                     User stories and release plan (CMA-BA-02)
-03-uat-test-plan.md                    UAT test plan (CMA-BA-03)
-04-traceability-matrix.md              Traceability matrix, generated (CMA-BA-04)
-traceability.csv                       Traceability, machine-readable, generated
-council-minutes-assistant-ba-pack.pdf  The full pack as one PDF
-diagrams/                              BPMN models, SVG and PNG renders, context diagram, data model
-evidence/                              Portal snapshot used for current-state counts
-scripts/portal_snapshot.py             Reproduces the snapshot
-tools/                                 Build and validation tooling (Node.js)
+00-executive-summary.md                   Two-page summary (start here)
+01-business-requirements-document.md      BRD (CMA-BA-01)
+02-user-stories.md                        User stories and release plan (CMA-BA-02)
+03-uat-test-plan.md                       UAT test plan (CMA-BA-03)
+04-traceability-matrix.md                 Traceability matrix, generated (CMA-BA-04)
+traceability.csv                          Traceability, machine-readable, generated
+council-minutes-assistant-ba-summary.pdf  The two-page summary as a PDF
+council-minutes-assistant-ba-pack.pdf     The full pack as one PDF
+diagrams/                                 BPMN models, SVG and PNG renders, context diagram, data model
+evidence/                                 Portal snapshot used for current-state counts
+scripts/portal_snapshot.py                Reproduces the snapshot
+tools/                                    Build and validation tooling (Node.js)
 ```
 
 ## Copyright and data
