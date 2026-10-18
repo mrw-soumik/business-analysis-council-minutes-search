@@ -1,0 +1,87 @@
+{
+  "source": "https://pub-stjohns.escribemeetings.com/MeetingsCalendarView.aspx/GetCalendarMeetings",
+  "as_of": "2026-10-17",
+  "note": "Counts are of meetings listed on the public portal with a start date on or before as_of. No City documents were downloaded.",
+  "earliest_meeting_on_portal": "2019-07-08",
+  "regular_council_meetings_held": 253,
+  "with_minutes_listed": 242,
+  "with_pdf_minutes": 233,
+  "html_only_minutes": 9,
+  "without_minutes_listed": 11,
+  "html_only_meeting_dates": [
+    "2022-07-12",
+    "2022-07-25",
+    "2023-09-05",
+    "2024-01-09",
+    "2024-02-06",
+    "2025-01-28",
+    "2025-03-25",
+    "2025-04-09",
+    "2025-07-29"
+  ],
+  "meeting_dates_without_minutes": [
+    "2021-03-08",
+    "2024-08-20",
+    "2025-03-11",
+    "2025-06-03",
+    "2025-07-02",
+    "2025-08-26",
+    "2025-10-07",
+    "2026-03-10",
+    "2026-07-28",
+    "2026-08-25",
+    "2026-10-06"
+  ],
+  "latest_meeting_with_minutes": "2026-09-22",
+  "latest_meeting_held": "2026-10-06",
+  "per_year": {
+    "2019": {
+      "meetings_held": 51,
+      "regular_council_meetings_held": 20,
+      "with_minutes_listed": 20,
+      "with_pdf_minutes": 20
+    },
+    "2020": {
+      "meetings_held": 96,
+      "regular_council_meetings_held": 37,
+      "with_minutes_listed": 37,
+      "with_pdf_minutes": 37
+    },
+    "2021": {
+      "meetings_held": 102,
+      "regular_council_meetings_held": 44,
+      "with_minutes_listed": 43,
+      "with_pdf_minutes": 43
+    },
+    "2022": {
+      "meetings_held": 110,
+      "regular_council_meetings_held": 45,
+      "with_minutes_listed": 45,
+      "with_pdf_minutes": 43
+    },
+    "2023": {
+      "meetings_held": 108,
+      "regular_council_meetings_held": 37,
+      "with_minutes_listed": 37,
+      "with_pdf_minutes": 36
+    },
+    "2024": {
+      "meetings_held": 83,
+      "regular_council_meetings_held": 25,
+      "with_minutes_listed": 24,
+      "with_pdf_minutes": 22
+    },
+    "2025": {
+      "meetings_held": 74,
+      "regular_council_meetings_held": 25,
+      "with_minutes_listed": 20,
+      "with_pdf_minutes": 16
+    },
+    "2026": {
+      "meetings_held": 56,
+      "regular_council_meetings_held": 20,
+      "with_minutes_listed": 16,
+      "with_pdf_minutes": 16
+    }
+  }
+}
