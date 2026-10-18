@@ -7,6 +7,7 @@
   "scripts": {
     "bpmn": "node bpmn/build-bpmn.mjs && node bpmn/validate-export.mjs",
     "lint:bpmn": "bpmnlint ../diagrams/current-state.bpmn ../diagrams/future-state.bpmn",
+    "xsd:bpmn": "node bpmn/validate-xsd.mjs",
     "diagrams": "node diagrams/build-static-svgs.mjs && node diagrams/render-png.mjs",
     "trace": "node trace/build-traceability.mjs",
     "pdf": "node pdf/build-pdf.mjs",
