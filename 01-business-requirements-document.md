@@ -572,7 +572,7 @@ A scheduled pipeline checks the portal for newly published minutes. It indexes t
 
 **Priority:** Must. **Traces to:** BR-02. **Stakeholder requirements:** SR-08.
 
-**Rationale:** ATIPPA, 2015 limits collection by a public body to information that relates directly to and is necessary for an operating program or activity (section 61), and requires reasonable security arrangements (section 64). The simplest compliant design collects nothing personal.
+**Rationale:** Under section 61 of ATIPPA, 2015, a public body may collect personal information only on limited grounds. The ground relevant to a service like this is information that "relates directly to and is necessary for an operating program or activity". Section 64 requires reasonable steps to protect the personal information a public body holds. The simplest design that meets both is one that collects nothing personal.
 
 | ID | Requirement | Priority | Acceptance criteria |
 |---|---|---|---|
