@@ -28,6 +28,15 @@ const files = [
 
 const xmlEscape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// bpmn-js gives arrow markers random IDs on every export; rename them in order of
+// appearance so that rebuilding an unchanged model produces an identical file.
+function stableMarkerIds(svg) {
+  const ids = [...new Set([...svg.matchAll(/id="(marker-[a-z0-9]+)"/g)].map((m) => m[1]))];
+  let out = svg;
+  ids.forEach((id, i) => { out = out.split(id).join(`arrow-marker-${i + 1}`); });
+  return out;
+}
+
 function addBackgroundAndTitle(svg, title, desc) {
   const open = svg.match(/<svg[^>]*>/);
   if (!open) throw new Error('No <svg> root found in export');
@@ -125,7 +134,7 @@ try {
       console.error(`FAIL ${f.bpmn}: ${result.legibility.length} legibility issue(s)`);
       for (const issue of result.legibility) console.error(`  ${issue}`);
     }
-    writeFileSync(resolve(diagrams, f.svg), addBackgroundAndTitle(result.svg, f.title, f.desc), 'utf8');
+    writeFileSync(resolve(diagrams, f.svg), stableMarkerIds(addBackgroundAndTitle(result.svg, f.title, f.desc)), 'utf8');
     const summary = Object.entries(result.counts)
       .filter(([t]) => !t.startsWith('label') && t !== 'bpmn:Collaboration')
       .map(([t, n]) => `${t.replace('bpmn:', '')}=${n}`)
