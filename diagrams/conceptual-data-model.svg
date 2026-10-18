@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="880" viewBox="0 0 1400 880" role="img" aria-labelledby="t d">
+<title id="t">Conceptual data model for the St. John's Council Minutes Assistant</title>
+<desc id="d">Entities Meeting, Minutes document, Page, Agenda item, Motion, Passage, Question, Answer and Citation with their key attributes and multiplicities.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#3d444d"/>
+  </marker>
+</defs>
+<rect x="0" y="0" width="1400" height="880" fill="#ffffff"/>
+<text x="30" y="42" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="30" dy="0">Conceptual data model: St. John's Council Minutes Assistant</tspan></text>
+<text x="30" y="64" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="30" dy="0">Business entities, key attributes and relationships. Conceptual level only: not a physical database design.</tspan></text>
+<rect x="30" y="100" width="260" height="144" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M31,132 L31,104 Q31,101 34,101 L286,101 Q289,101 289,104 L289,132 z" fill="#eef1f5"/>
+<line x1="30" y1="132" x2="290" y2="132" stroke="#3d444d" stroke-width="1.2"/>
+<text x="42" y="121" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Meeting</tspan></text>
+<text x="42" y="150" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Meeting ID (eSCRIBE)</tspan></text>
+<text x="42" y="170" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Meeting type</tspan></text>
+<text x="42" y="190" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Meeting date and time</tspan></text>
+<text x="42" y="210" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Location</tspan></text>
+<text x="42" y="230" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Portal URL</tspan></text>
+<rect x="390" y="100" width="260" height="144" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M391,132 L391,104 Q391,101 394,101 L646,101 Q649,101 649,104 L649,132 z" fill="#eef1f5"/>
+<line x1="390" y1="132" x2="650" y2="132" stroke="#3d444d" stroke-width="1.2"/>
+<text x="402" y="121" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Minutes document</tspan></text>
+<text x="402" y="150" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Document ID (eSCRIBE)</tspan></text>
+<text x="402" y="170" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Format (PDF or HTML)</tspan></text>
+<text x="402" y="190" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Official URL</tspan></text>
+<text x="402" y="210" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Retrieved at</tspan></text>
+<text x="402" y="230" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Content hash (change detection)</tspan></text>
+<rect x="750" y="100" width="260" height="104" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M751,132 L751,104 Q751,101 754,101 L1006,101 Q1009,101 1009,104 L1009,132 z" fill="#eef1f5"/>
+<line x1="750" y1="132" x2="1010" y2="132" stroke="#3d444d" stroke-width="1.2"/>
+<text x="762" y="121" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Page</tspan></text>
+<text x="762" y="150" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Page number (PDF only)</tspan></text>
+<text x="762" y="170" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Extracted text (local cache only)</tspan></text>
+<text x="762" y="190" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Deep link (URL#page=n)</tspan></text>
+<rect x="30" y="380" width="260" height="104" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M31,412 L31,384 Q31,381 34,381 L286,381 Q289,381 289,384 L289,412 z" fill="#eef1f5"/>
+<line x1="30" y1="412" x2="290" y2="412" stroke="#3d444d" stroke-width="1.2"/>
+<text x="42" y="401" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Agenda item</tspan></text>
+<text x="42" y="430" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Item number (for example 15.1)</tspan></text>
+<text x="42" y="450" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Item title</tspan></text>
+<text x="42" y="470" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Section heading</tspan></text>
+<rect x="390" y="380" width="260" height="144" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M391,412 L391,384 Q391,381 394,381 L646,381 Q649,381 649,384 L649,412 z" fill="#f6f2fa"/>
+<line x1="390" y1="412" x2="650" y2="412" stroke="#3d444d" stroke-width="1.2"/>
+<text x="402" y="401" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Passage</tspan></text>
+<text x="402" y="430" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Passage ID</tspan></text>
+<text x="402" y="450" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Text (shown as 300 characters max)</tspan></text>
+<text x="402" y="470" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Page number or item number</tspan></text>
+<text x="402" y="490" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Keyword index terms</tspan></text>
+<text x="402" y="510" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Embedding vector</tspan></text>
+<rect x="30" y="650" width="260" height="124" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8" stroke-dasharray="7 5"/>
+<path d="M31,682 L31,654 Q31,651 34,651 L286,651 Q289,651 289,654 L289,682 z" fill="#f6f6f6"/>
+<line x1="30" y1="682" x2="290" y2="682" stroke="#3d444d" stroke-width="1.2" stroke-dasharray="7 5"/>
+<text x="42" y="671" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Motion (later release)</tspan></text>
+<text x="42" y="700" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Resolution number (SJMC-R-...)</tspan></text>
+<text x="42" y="720" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Motion text</tspan></text>
+<text x="42" y="740" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Outcome (carried or defeated)</tspan></text>
+<text x="42" y="760" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="42" dy="0">Votes for, against, abstaining</tspan></text>
+<rect x="390" y="650" width="260" height="124" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M391,682 L391,654 Q391,651 394,651 L646,651 Q649,651 649,654 L649,682 z" fill="#eef5f0"/>
+<line x1="390" y1="682" x2="650" y2="682" stroke="#3d444d" stroke-width="1.2"/>
+<text x="402" y="671" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Citation</tspan></text>
+<text x="402" y="700" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Rank (1 to 5)</tspan></text>
+<text x="402" y="720" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Excerpt shown</tspan></text>
+<text x="402" y="740" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Link to official document</tspan></text>
+<text x="402" y="760" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="402" dy="0">Supports claim? (evaluation)</tspan></text>
+<rect x="750" y="650" width="260" height="144" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M751,682 L751,654 Q751,651 754,651 L1006,651 Q1009,651 1009,654 L1009,682 z" fill="#eef5f0"/>
+<line x1="750" y1="682" x2="1010" y2="682" stroke="#3d444d" stroke-width="1.2"/>
+<text x="762" y="671" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Answer</tspan></text>
+<text x="762" y="700" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Outcome (answered or not found)</tspan></text>
+<text x="762" y="720" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Answer text</tspan></text>
+<text x="762" y="740" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Model name and version</tspan></text>
+<text x="762" y="760" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Response time</tspan></text>
+<text x="762" y="780" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="762" dy="0">Model cost (CAD)</tspan></text>
+<rect x="1110" y="650" width="260" height="104" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<path d="M1111,682 L1111,654 Q1111,651 1114,651 L1366,651 Q1369,651 1369,654 L1369,682 z" fill="#eef5f0"/>
+<line x1="1110" y1="682" x2="1370" y2="682" stroke="#3d444d" stroke-width="1.2"/>
+<text x="1122" y="671" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Question</tspan></text>
+<text x="1122" y="700" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Question text</tspan></text>
+<text x="1122" y="720" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Date range filter (optional)</tspan></text>
+<text x="1122" y="740" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Asked at (no user identifiers)</tspan></text>
+<path d="M290,162 L390,162" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="296" y="156" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="296" dy="0">1</tspan></text>
+<text x="384" y="156" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="end" fill="#1f2328"><tspan x="384" dy="0">0..*</tspan></text>
+<text x="340" y="180" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a" font-style="italic"><tspan x="340" dy="0">is recorded in</tspan></text>
+<path d="M650,162 L750,162" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="656" y="156" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="656" dy="0">1</tspan></text>
+<text x="744" y="156" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="end" fill="#1f2328"><tspan x="744" dy="0">0..*</tspan></text>
+<text x="700" y="180" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a" font-style="italic"><tspan x="700" dy="0">has</tspan></text>
+<path d="M160,244 L160,380" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="168" y="262" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="168" dy="0">1</tspan></text>
+<text x="168" y="372" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="168" dy="0">0..*</tspan></text>
+<text x="172" y="316" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a" font-style="italic"><tspan x="172" dy="0">lists</tspan></text>
+<path d="M520,244 L520,380" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="528" y="262" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="528" dy="0">1</tspan></text>
+<text x="528" y="372" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="528" dy="0">1..*</tspan></text>
+<text x="532" y="316" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a" font-style="italic"><tspan x="532" dy="0">is split into</tspan></text>
+<path d="M880,204 L880,420 L650,420" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="888" y="222" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="888" dy="0">0..1</tspan></text>
+<text x="658" y="412" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="658" dy="0">0..*</tspan></text>
+<text x="870" y="438" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="end" fill="#57606a" font-style="italic"><tspan x="870" dy="0">contains</tspan></text>
+<path d="M290,442 L390,442" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="296" y="436" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="296" dy="0">0..1</tspan></text>
+<text x="384" y="436" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="end" fill="#1f2328"><tspan x="384" dy="0">0..*</tspan></text>
+<text x="340" y="460" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a" font-style="italic"><tspan x="340" dy="0">is described by</tspan></text>
+<path d="M160,484 L160,650" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="168" y="502" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="168" dy="0">1</tspan></text>
+<text x="168" y="642" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="168" dy="0">0..*</tspan></text>
+<text x="172" y="571" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a" font-style="italic"><tspan x="172" dy="0">records</tspan></text>
+<path d="M520,524 L520,650" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="528" y="542" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="528" dy="0">1</tspan></text>
+<text x="528" y="642" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="528" dy="0">0..*</tspan></text>
+<text x="532" y="591" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a" font-style="italic"><tspan x="532" dy="0">is cited by</tspan></text>
+<path d="M750,712 L650,712" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="744" y="706" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="end" fill="#1f2328"><tspan x="744" dy="0">1</tspan></text>
+<text x="656" y="706" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="656" dy="0">0..*</tspan></text>
+<text x="700" y="730" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a" font-style="italic"><tspan x="700" dy="0">is supported by</tspan></text>
+<path d="M1110,712 L1010,712" fill="none" stroke="#3d444d" stroke-width="1.6"/>
+<text x="1104" y="706" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="end" fill="#1f2328"><tspan x="1104" dy="0">1</tspan></text>
+<text x="1016" y="706" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="1016" dy="0">0..1</tspan></text>
+<text x="1060" y="730" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a" font-style="italic"><tspan x="1060" dy="0">receives</tspan></text>
+<rect x="1110" y="100" width="260" height="236" rx="4" fill="#ffffff" stroke="#57606a" stroke-width="1"/>
+<text x="1122" y="122" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Legend</tspan></text>
+<rect x="1122" y="138" width="22" height="16" fill="#eef1f5" stroke="#3d444d" stroke-width="1"/>
+<text x="1152" y="150" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1152" dy="0">Source record (public City data)</tspan></text>
+<rect x="1122" y="162" width="22" height="16" fill="#f6f2fa" stroke="#3d444d" stroke-width="1"/>
+<text x="1152" y="174" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1152" dy="0">Search index (derived data)</tspan></text>
+<rect x="1122" y="186" width="22" height="16" fill="#eef5f0" stroke="#3d444d" stroke-width="1"/>
+<text x="1152" y="198" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1152" dy="0">Interaction (no personal data)</tspan></text>
+<rect x="1122" y="210" width="22" height="16" fill="#f6f6f6" stroke="#3d444d" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1152" y="222" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1152" dy="0">Later release candidate</tspan></text>
+<text x="1122" y="250" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="1122" dy="0">Multiplicity at each end: 1 = exactly</tspan><tspan x="1122" dy="15.6">one; 0..1 = zero or one; 0..* = zero or</tspan><tspan x="1122" dy="15.6">more; 1..* = one or more.</tspan></text>
+<text x="1122" y="304" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="1122" dy="0">Relationship labels read from the &quot;1&quot;</tspan><tspan x="1122" dy="15.6">end.</tspan></text>
+<rect x="1110" y="380" width="260" height="196" rx="4" fill="#ffffff" stroke="#57606a" stroke-width="1"/>
+<text x="1122" y="402" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">Data handling rules</tspan></text>
+<text x="1122" y="428" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">•</tspan></text>
+<text x="1134" y="428" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1134" dy="0">Minutes text is cached locally for</tspan><tspan x="1134" dy="15.6">indexing and is not redistributed</tspan><tspan x="1134" dy="15.6">(BRL-05).</tspan></text>
+<text x="1122" y="484.8" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">•</tspan></text>
+<text x="1134" y="484.8" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1134" dy="0">Excerpts shown are 300 characters or</tspan><tspan x="1134" dy="15.6">fewer, with a link to the source</tspan><tspan x="1134" dy="15.6">(FR-05).</tspan></text>
+<text x="1122" y="541.6" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1122" dy="0">•</tspan></text>
+<text x="1134" y="541.6" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="1134" dy="0">Questions are stored without user</tspan><tspan x="1134" dy="15.6">identifiers (NFR-06).</tspan></text>
+<text x="30" y="858" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="30" dy="0">Independent portfolio project. Not affiliated with or endorsed by the City of St. John's.</tspan></text>
+</svg>

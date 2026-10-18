@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="911" viewBox="0 0 1240 911" role="img" aria-labelledby="t d">
+<title id="t">Context diagram for the St. John's Council Minutes Assistant</title>
+<desc id="d">The solution exchanges questions and answers with residents and City staff, retrieves minutes from the eSCRIBE portal, sends passages to a language model provider, and reports to a maintainer.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#3d444d"/>
+  </marker>
+</defs>
+<rect x="0" y="0" width="1240" height="911" fill="#ffffff"/>
+<text x="40" y="46" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" text-anchor="start" fill="#1f2328"><tspan x="40" dy="0">Context diagram: St. John's Council Minutes Assistant</tspan></text>
+<text x="40" y="70" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="40" dy="0">External entities and the information that flows between them and the solution. Arrows point to the receiver.</tspan></text>
+<rect x="470" y="110" width="300" height="506" rx="18" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2.5"/>
+<text x="620" y="148" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="620" dy="0">St. John's Council</tspan><tspan x="620" dy="23.4">Minutes Assistant</tspan></text>
+<text x="620" y="200" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="620" dy="0">Solution scope (built in Project A)</tspan></text>
+<line x1="494" y1="216" x2="746" y2="216" stroke="#6a4c86" stroke-width="1"/>
+<text x="496" y="242" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="242" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Answers plain-language</tspan><tspan x="510" dy="16.9">questions (FR-01)</tspan></text>
+<text x="496" y="285" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="285" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Cites meeting, date and page</tspan><tspan x="510" dy="16.9">with a link (FR-02)</tspan></text>
+<text x="496" y="328" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="328" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Says &quot;not found in the minutes&quot;</tspan><tspan x="510" dy="16.9">(FR-03)</tspan></text>
+<text x="496" y="371" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="371" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Filters by meeting date range</tspan><tspan x="510" dy="16.9">(FR-04)</tspan></text>
+<text x="496" y="414" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="414" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Shows short source excerpts</tspan><tspan x="510" dy="16.9">(FR-05)</tspan></text>
+<text x="496" y="457" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="457" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Hybrid keyword and semantic</tspan><tspan x="510" dy="16.9">search (FR-06)</tspan></text>
+<text x="496" y="500" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="496" dy="0">•</tspan></text>
+<text x="510" y="500" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="510" dy="0">Ingests new minutes on a</tspan><tspan x="510" dy="16.9">schedule (FR-07)</tspan></text>
+<line x1="494" y1="541" x2="746" y2="541" stroke="#6a4c86" stroke-width="1"/>
+<text x="496" y="563" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="496" dy="0">Data: Regular Council Meeting</tspan><tspan x="496" dy="15.6">minutes published on eSCRIBE (portal</tspan><tspan x="496" dy="15.6">coverage from July 2019)</tspan></text>
+<rect x="40" y="150" width="240" height="100" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<text x="160" y="187" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="160" dy="0">Residents, journalists and</tspan><tspan x="160" dy="17.5">community volunteers</tspan></text>
+<text x="160" y="223" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="160" dy="0">Primary users</tspan></text>
+<rect x="40" y="410" width="240" height="100" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<text x="160" y="447" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="160" dy="0">City staff answering</tspan><tspan x="160" dy="17.5">enquiries</tspan></text>
+<text x="160" y="483" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="160" dy="0">City Clerk's office and 311</tspan></text>
+<rect x="960" y="150" width="240" height="100" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<text x="1080" y="187" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="1080" dy="0">Language model and embedding</tspan><tspan x="1080" dy="17.5">API</tspan></text>
+<text x="1080" y="223" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="1080" dy="0">External service provider</tspan></text>
+<rect x="960" y="410" width="240" height="100" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<text x="1080" y="447" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="1080" dy="0">eSCRIBE public meetings</tspan><tspan x="1080" dy="17.5">portal</tspan></text>
+<text x="1080" y="483" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="1080" dy="0">Official record (City of St. John's)</tspan></text>
+<rect x="500" y="716" width="240" height="90" rx="4" fill="#ffffff" stroke="#3d444d" stroke-width="1.8"/>
+<text x="620" y="757" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="620" dy="0">Maintainer</tspan></text>
+<text x="620" y="775" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="620" dy="0">Product owner and developer</tspan></text>
+<line x1="280" y1="180" x2="470" y2="180" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="375" y="170" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="375" dy="0">Question, optional date range</tspan></text>
+<line x1="470" y1="222" x2="280" y2="222" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="375" y="241" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="375" dy="0">Answer with citations and</tspan><tspan x="375" dy="15.0">excerpts, or &quot;not found&quot;</tspan></text>
+<line x1="280" y1="440" x2="470" y2="440" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="375" y="430" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="375" dy="0">Question about a decision</tspan></text>
+<line x1="470" y1="482" x2="280" y2="482" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="375" y="501" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="375" dy="0">Answer with citations</tspan><tspan x="375" dy="15.0">and official links</tspan></text>
+<line x1="770" y1="180" x2="960" y2="180" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="865" y="156" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="865" dy="0">Question and retrieved</tspan><tspan x="865" dy="15.0">passages (no identifiers)</tspan></text>
+<line x1="960" y1="222" x2="770" y2="222" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="865" y="241" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="865" dy="0">Draft answer, embeddings</tspan></text>
+<line x1="770" y1="440" x2="960" y2="440" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="865" y="430" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="865" dy="0">Requests (max 1 per second)</tspan></text>
+<line x1="960" y1="482" x2="770" y2="482" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="865" y="501" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="865" dy="0">Meeting list and minutes</tspan><tspan x="865" dy="15.0">(PDF, HTML)</tspan></text>
+<line x1="585" y1="616" x2="585" y2="716" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="575" y="662" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="end" fill="#1f2328"><tspan x="575" dy="0">Ingestion log, quality</tspan><tspan x="575" dy="15.0">report and alerts</tspan></text>
+<line x1="655" y1="716" x2="655" y2="616" stroke="#3d444d" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="665" y="662" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1f2328"><tspan x="665" dy="0">Configuration and</tspan><tspan x="665" dy="15.0">corrections</tspan></text>
+<text x="40" y="850" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="40" dy="0">Out of scope: Committee of the Whole and other committee minutes, agendas, attachments, video, records not published on eSCRIBE, and any</tspan><tspan x="40" dy="15.6">change to eSCRIBE itself. The eSCRIBE portal remains the official record.</tspan></text>
+<text x="40" y="887.2" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="40" dy="0">Independent portfolio project. Not affiliated with or endorsed by the City of St. John's.</tspan></text>
+</svg>

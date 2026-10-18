@@ -1,0 +1,28 @@
+// Renders every SVG in ../diagrams to a PNG at 2x scale using headless Chrome.
+// Usage: node diagrams/render-png.mjs   (run from the tools folder)
+import { readFileSync, readdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { launchChrome } from '../lib/chrome.mjs';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const diagrams = resolve(here, '../../diagrams');
+
+const svgs = readdirSync(diagrams).filter((f) => f.endsWith('.svg')).sort();
+const browser = await launchChrome();
+try {
+  const page = await browser.newPage();
+  for (const file of svgs) {
+    const svg = readFileSync(resolve(diagrams, file), 'utf8').replace(/^<\?xml[^>]*>\s*/, '').replace(/<!DOCTYPE[^>]*>\s*/, '');
+    const open = svg.match(/<svg[^>]*>/)[0];
+    const w = Math.ceil(parseFloat(open.match(/width="([\d.]+)/)[1]));
+    const h = Math.ceil(parseFloat(open.match(/height="([\d.]+)/)[1]));
+    await page.setViewport({ width: w, height: h, deviceScaleFactor: 2 });
+    await page.setContent(`<!doctype html><html><body style="margin:0;background:#ffffff">${svg}</body></html>`);
+    const out = resolve(diagrams, file.replace(/\.svg$/, '.png'));
+    await page.screenshot({ path: out, clip: { x: 0, y: 0, width: w, height: h } });
+    console.log(`rendered diagrams/${file.replace(/\.svg$/, '.png')} (${w * 2}x${h * 2})`);
+  }
+} finally {
+  await browser.close();
+}

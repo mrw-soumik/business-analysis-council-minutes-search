@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_CurrentState" targetNamespace="https://github.com/mrw-soumik/business-analysis-council-minutes-search" exporter="business-analysis-council-minutes-search/tools/bpmn" exporterVersion="1.0">
+  <bpmn:collaboration id="Collaboration_CurrentState">
+    <bpmn:documentation>Current-state process map for the St. John's Council Minutes Assistant business analysis. Seeker and portal steps are based on the public eSCRIBE portal and City web pages reviewed on 2026-10-17. City staff and ATIPP steps are assumptions to validate with stakeholders. Independent portfolio project, not affiliated with or endorsed by the City of St. John's.</bpmn:documentation>
+    <bpmn:participant id="Participant_Escribe_AsIs" name="eSCRIBE public meetings portal (City of St. John's)" />
+    <bpmn:participant id="Participant_Seeker_AsIs" name="Information seeker (resident, journalist, community volunteer)" processRef="Process_Seeker_AsIs" />
+    <bpmn:participant id="Participant_City_AsIs" name="City of St. John's" processRef="Process_City_AsIs" />
+    <bpmn:messageFlow id="Message_AsIs_01" name="Keyword query" sourceRef="AsIs_Search" targetRef="Participant_Escribe_AsIs" />
+    <bpmn:messageFlow id="Message_AsIs_02" name="Results list (no excerpts)" sourceRef="Participant_Escribe_AsIs" targetRef="AsIs_Search" />
+    <bpmn:messageFlow id="Message_AsIs_03" name="Minutes (PDF or HTML)" sourceRef="Participant_Escribe_AsIs" targetRef="AsIs_OpenMinutes" />
+    <bpmn:messageFlow id="Message_AsIs_04" name="Enquiry" sourceRef="AsIs_AskCity" targetRef="City_EnquiryReceived" />
+    <bpmn:messageFlow id="Message_AsIs_05" name="Reply" sourceRef="City_Reply" targetRef="AsIs_AskCity" />
+    <bpmn:messageFlow id="Message_AsIs_06" name="Access request" sourceRef="AsIs_Atipp" targetRef="City_RequestReceived" />
+    <bpmn:messageFlow id="Message_AsIs_07" name="Response" sourceRef="City_ProcessRequest" targetRef="AsIs_Atipp" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Seeker_AsIs" name="Find a council decision (as-is)" isExecutable="false">
+    <bpmn:startEvent id="AsIs_Start" name="Question about a council decision">
+      <bpmn:outgoing>Flow_AsIs_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="AsIs_OpenCalendar" name="Open the meeting calendar">
+      <bpmn:incoming>Flow_AsIs_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="AsIs_JoinRetry">
+      <bpmn:incoming>Flow_AsIs_02</bpmn:incoming>
+      <bpmn:incoming>Flow_AsIs_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_03</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="AsIs_DateKnown" name="Date known?">
+      <bpmn:incoming>Flow_AsIs_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_04</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AsIs_05</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="AsIs_Browse" name="Browse to the meeting date">
+      <bpmn:incoming>Flow_AsIs_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="AsIs_Search" name="Search by keyword with filters">
+      <bpmn:incoming>Flow_AsIs_05</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_07</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="AsIs_JoinFind">
+      <bpmn:incoming>Flow_AsIs_06</bpmn:incoming>
+      <bpmn:incoming>Flow_AsIs_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_08</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="AsIs_OpenMinutes" name="Open the minutes, one by one">
+      <bpmn:incoming>Flow_AsIs_08</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_09</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="AsIs_ReadFind" name="Read and search the text (Ctrl+F)">
+      <bpmn:incoming>Flow_AsIs_09</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_10</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="AsIs_Found" name="Decision found?">
+      <bpmn:incoming>Flow_AsIs_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AsIs_12</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="AsIs_Note" name="Note the meeting, date and item">
+      <bpmn:incoming>Flow_AsIs_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="AsIs_EndFound" name="Decision found">
+      <bpmn:incoming>Flow_AsIs_13</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="AsIs_NextStep" name="Next step?">
+      <bpmn:incoming>Flow_AsIs_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AsIs_15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AsIs_16</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="AsIs_AskCity" name="Ask the City Clerk's office or 311">
+      <bpmn:incoming>Flow_AsIs_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_17</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="AsIs_NeedMet" name="Need met?">
+      <bpmn:incoming>Flow_AsIs_17</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AsIs_19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="AsIs_EndAnswered" name="Answer received">
+      <bpmn:incoming>Flow_AsIs_18</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="AsIs_EndGaveUp" name="Need not met">
+      <bpmn:incoming>Flow_AsIs_15</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="AsIs_Atipp" name="Submit an access request (ATIPPA, 2015)">
+      <bpmn:incoming>Flow_AsIs_19</bpmn:incoming>
+      <bpmn:outgoing>Flow_AsIs_20</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="AsIs_EndAtipp" name="Response received">
+      <bpmn:incoming>Flow_AsIs_20</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_AsIs_01" sourceRef="AsIs_Start" targetRef="AsIs_OpenCalendar" />
+    <bpmn:sequenceFlow id="Flow_AsIs_02" sourceRef="AsIs_OpenCalendar" targetRef="AsIs_JoinRetry" />
+    <bpmn:sequenceFlow id="Flow_AsIs_03" sourceRef="AsIs_JoinRetry" targetRef="AsIs_DateKnown" />
+    <bpmn:sequenceFlow id="Flow_AsIs_04" name="Yes" sourceRef="AsIs_DateKnown" targetRef="AsIs_Browse" />
+    <bpmn:sequenceFlow id="Flow_AsIs_05" name="No" sourceRef="AsIs_DateKnown" targetRef="AsIs_Search" />
+    <bpmn:sequenceFlow id="Flow_AsIs_06" sourceRef="AsIs_Browse" targetRef="AsIs_JoinFind" />
+    <bpmn:sequenceFlow id="Flow_AsIs_07" sourceRef="AsIs_Search" targetRef="AsIs_JoinFind" />
+    <bpmn:sequenceFlow id="Flow_AsIs_08" sourceRef="AsIs_JoinFind" targetRef="AsIs_OpenMinutes" />
+    <bpmn:sequenceFlow id="Flow_AsIs_09" sourceRef="AsIs_OpenMinutes" targetRef="AsIs_ReadFind" />
+    <bpmn:sequenceFlow id="Flow_AsIs_10" sourceRef="AsIs_ReadFind" targetRef="AsIs_Found" />
+    <bpmn:sequenceFlow id="Flow_AsIs_11" name="Yes" sourceRef="AsIs_Found" targetRef="AsIs_Note" />
+    <bpmn:sequenceFlow id="Flow_AsIs_12" name="No" sourceRef="AsIs_Found" targetRef="AsIs_NextStep" />
+    <bpmn:sequenceFlow id="Flow_AsIs_13" sourceRef="AsIs_Note" targetRef="AsIs_EndFound" />
+    <bpmn:sequenceFlow id="Flow_AsIs_14" name="Ask the City" sourceRef="AsIs_NextStep" targetRef="AsIs_AskCity" />
+    <bpmn:sequenceFlow id="Flow_AsIs_15" name="Give up" sourceRef="AsIs_NextStep" targetRef="AsIs_EndGaveUp" />
+    <bpmn:sequenceFlow id="Flow_AsIs_16" name="Try other terms or meetings" sourceRef="AsIs_NextStep" targetRef="AsIs_JoinRetry" />
+    <bpmn:sequenceFlow id="Flow_AsIs_17" sourceRef="AsIs_AskCity" targetRef="AsIs_NeedMet" />
+    <bpmn:sequenceFlow id="Flow_AsIs_18" name="Yes" sourceRef="AsIs_NeedMet" targetRef="AsIs_EndAnswered" />
+    <bpmn:sequenceFlow id="Flow_AsIs_19" name="No" sourceRef="AsIs_NeedMet" targetRef="AsIs_Atipp" />
+    <bpmn:sequenceFlow id="Flow_AsIs_20" sourceRef="AsIs_Atipp" targetRef="AsIs_EndAtipp" />
+    <bpmn:textAnnotation id="Annotation_PP01">
+      <bpmn:text>PP-01 Results show documents, not excerpts</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_Annotation_PP01" associationDirection="None" sourceRef="AsIs_Search" targetRef="Annotation_PP01" />
+    <bpmn:textAnnotation id="Annotation_PP02">
+      <bpmn:text>PP-02 Documents are opened one at a time</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_Annotation_PP02" associationDirection="None" sourceRef="AsIs_OpenMinutes" targetRef="Annotation_PP02" />
+    <bpmn:textAnnotation id="Annotation_PP03">
+      <bpmn:text>PP-03 Ctrl+F needs the exact words used</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_Annotation_PP03" associationDirection="None" sourceRef="AsIs_ReadFind" targetRef="Annotation_PP03" />
+  </bpmn:process>
+  <bpmn:process id="Process_City_AsIs" name="Handle enquiries and access requests (as-is, assumed)" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_City_AsIs">
+      <bpmn:lane id="Lane_Staff_AsIs" name="City Clerk's office and 311">
+        <bpmn:flowNodeRef>City_EnquiryReceived</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>City_SearchManually</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>City_Reply</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>City_EnquiryClosed</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Atipp_AsIs" name="ATIPP Coordinator">
+        <bpmn:flowNodeRef>City_RequestReceived</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>City_ProcessRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>City_RequestClosed</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="City_EnquiryReceived" name="Enquiry received">
+      <bpmn:outgoing>Flow_City_01</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_City_EnquiryReceived" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="City_SearchManually" name="Search and read the minutes">
+      <bpmn:incoming>Flow_City_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_City_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="City_Reply" name="Reply with the meeting reference">
+      <bpmn:incoming>Flow_City_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_City_03</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="City_EnquiryClosed" name="Enquiry closed">
+      <bpmn:incoming>Flow_City_03</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="City_RequestReceived" name="Access request received">
+      <bpmn:outgoing>Flow_City_04</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_City_RequestReceived" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="City_ProcessRequest" name="Process request (20 business days)">
+      <bpmn:incoming>Flow_City_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_City_05</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="City_RequestClosed" name="Request closed">
+      <bpmn:incoming>Flow_City_05</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_City_01" sourceRef="City_EnquiryReceived" targetRef="City_SearchManually" />
+    <bpmn:sequenceFlow id="Flow_City_02" sourceRef="City_SearchManually" targetRef="City_Reply" />
+    <bpmn:sequenceFlow id="Flow_City_03" sourceRef="City_Reply" targetRef="City_EnquiryClosed" />
+    <bpmn:sequenceFlow id="Flow_City_04" sourceRef="City_RequestReceived" targetRef="City_ProcessRequest" />
+    <bpmn:sequenceFlow id="Flow_City_05" sourceRef="City_ProcessRequest" targetRef="City_RequestClosed" />
+    <bpmn:textAnnotation id="Annotation_PP04">
+      <bpmn:text>PP-04 Staff repeat the same manual search</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_Annotation_PP04" associationDirection="None" sourceRef="City_SearchManually" targetRef="Annotation_PP04" />
+    <bpmn:textAnnotation id="Annotation_PP05">
+      <bpmn:text>PP-05 Formal request for already public records</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_Annotation_PP05" associationDirection="None" sourceRef="City_ProcessRequest" targetRef="Annotation_PP05" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CurrentState" name="Finding what council decided: current state (as-is)">
+    <bpmndi:BPMNPlane id="BPMNPlane_CurrentState" bpmnElement="Collaboration_CurrentState">
+      <bpmndi:BPMNShape id="Participant_Escribe_AsIs_di" bpmnElement="Participant_Escribe_AsIs" isHorizontal="true">
+        <dc:Bounds x="100" y="30" width="1620" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Seeker_AsIs_di" bpmnElement="Participant_Seeker_AsIs" isHorizontal="true">
+        <dc:Bounds x="100" y="140" width="1620" height="490" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_City_AsIs_di" bpmnElement="Participant_City_AsIs" isHorizontal="true">
+        <dc:Bounds x="100" y="680" width="1620" height="350" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Staff_AsIs_di" bpmnElement="Lane_Staff_AsIs" isHorizontal="true">
+        <dc:Bounds x="130" y="680" width="1590" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Atipp_AsIs_di" bpmnElement="Lane_Atipp_AsIs" isHorizontal="true">
+        <dc:Bounds x="130" y="850" width="1590" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Start_di" bpmnElement="AsIs_Start">
+        <dc:Bounds x="172" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="148" y="354" width="84" height="42" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_OpenCalendar_di" bpmnElement="AsIs_OpenCalendar">
+        <dc:Bounds x="250" y="285" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_JoinRetry_di" bpmnElement="AsIs_JoinRetry" isMarkerVisible="true">
+        <dc:Bounds x="385" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_DateKnown_di" bpmnElement="AsIs_DateKnown" isMarkerVisible="true">
+        <dc:Bounds x="475" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="467" y="361" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Browse_di" bpmnElement="AsIs_Browse">
+        <dc:Bounds x="575" y="285" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Search_di" bpmnElement="AsIs_Search">
+        <dc:Bounds x="575" y="160" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_JoinFind_di" bpmnElement="AsIs_JoinFind" isMarkerVisible="true">
+        <dc:Bounds x="725" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_OpenMinutes_di" bpmnElement="AsIs_OpenMinutes">
+        <dc:Bounds x="820" y="285" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_ReadFind_di" bpmnElement="AsIs_ReadFind">
+        <dc:Bounds x="960" y="285" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Found_di" bpmnElement="AsIs_Found" isMarkerVisible="true">
+        <dc:Bounds x="1110" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1090" y="285" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Note_di" bpmnElement="AsIs_Note">
+        <dc:Bounds x="1230" y="285" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_EndFound_di" bpmnElement="AsIs_EndFound">
+        <dc:Bounds x="1382" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1358" y="354" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_NextStep_di" bpmnElement="AsIs_NextStep" isMarkerVisible="true">
+        <dc:Bounds x="1110" y="430" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1050" y="485" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_AskCity_di" bpmnElement="AsIs_AskCity">
+        <dc:Bounds x="1230" y="410" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_NeedMet_di" bpmnElement="AsIs_NeedMet" isMarkerVisible="true">
+        <dc:Bounds x="1385" y="430" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1383" y="410" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_EndAnswered_di" bpmnElement="AsIs_EndAnswered">
+        <dc:Bounds x="1502" y="437" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1475" y="479" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_EndGaveUp_di" bpmnElement="AsIs_EndGaveUp">
+        <dc:Bounds x="1117" y="547" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1099" y="589" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_Atipp_di" bpmnElement="AsIs_Atipp">
+        <dc:Bounds x="1360" y="520" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AsIs_EndAtipp_di" bpmnElement="AsIs_EndAtipp">
+        <dc:Bounds x="1502" y="547" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1496" y="589" width="48" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_EnquiryReceived_di" bpmnElement="City_EnquiryReceived">
+        <dc:Bounds x="852" y="727" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="846" y="769" width="48" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_SearchManually_di" bpmnElement="City_SearchManually">
+        <dc:Bounds x="950" y="700" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_Reply_di" bpmnElement="City_Reply">
+        <dc:Bounds x="1090" y="700" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_EnquiryClosed_di" bpmnElement="City_EnquiryClosed">
+        <dc:Bounds x="1252" y="727" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1228" y="769" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_RequestReceived_di" bpmnElement="City_RequestReceived">
+        <dc:Bounds x="1377" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1353" y="939" width="84" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_ProcessRequest_di" bpmnElement="City_ProcessRequest">
+        <dc:Bounds x="1470" y="870" width="100" height="90" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="City_RequestClosed_di" bpmnElement="City_RequestClosed">
+        <dc:Bounds x="1632" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1608" y="939" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_PP01_di" bpmnElement="Annotation_PP01">
+        <dc:Bounds x="690" y="150" width="160" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_PP02_di" bpmnElement="Annotation_PP02">
+        <dc:Bounds x="900" y="168" width="160" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_PP03_di" bpmnElement="Annotation_PP03">
+        <dc:Bounds x="1080" y="168" width="160" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_PP04_di" bpmnElement="Annotation_PP04">
+        <dc:Bounds x="930" y="802" width="170" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Annotation_PP05_di" bpmnElement="Annotation_PP05">
+        <dc:Bounds x="1440" y="978" width="175" height="40" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_AsIs_01_di" bpmnElement="Flow_AsIs_01">
+        <di:waypoint x="208" y="330" />
+        <di:waypoint x="250" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_02_di" bpmnElement="Flow_AsIs_02">
+        <di:waypoint x="350" y="330" />
+        <di:waypoint x="385" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_03_di" bpmnElement="Flow_AsIs_03">
+        <di:waypoint x="435" y="330" />
+        <di:waypoint x="475" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_04_di" bpmnElement="Flow_AsIs_04">
+        <di:waypoint x="525" y="330" />
+        <di:waypoint x="575" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="544" y="312" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_05_di" bpmnElement="Flow_AsIs_05">
+        <di:waypoint x="500" y="305" />
+        <di:waypoint x="500" y="205" />
+        <di:waypoint x="575" y="205" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="516" y="284" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_06_di" bpmnElement="Flow_AsIs_06">
+        <di:waypoint x="675" y="330" />
+        <di:waypoint x="725" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_07_di" bpmnElement="Flow_AsIs_07">
+        <di:waypoint x="675" y="205" />
+        <di:waypoint x="750" y="205" />
+        <di:waypoint x="750" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_08_di" bpmnElement="Flow_AsIs_08">
+        <di:waypoint x="775" y="330" />
+        <di:waypoint x="820" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_09_di" bpmnElement="Flow_AsIs_09">
+        <di:waypoint x="920" y="330" />
+        <di:waypoint x="960" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_10_di" bpmnElement="Flow_AsIs_10">
+        <di:waypoint x="1060" y="330" />
+        <di:waypoint x="1110" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_11_di" bpmnElement="Flow_AsIs_11">
+        <di:waypoint x="1160" y="330" />
+        <di:waypoint x="1230" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1179" y="312" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_12_di" bpmnElement="Flow_AsIs_12">
+        <di:waypoint x="1135" y="355" />
+        <di:waypoint x="1135" y="430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1151" y="362" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_13_di" bpmnElement="Flow_AsIs_13">
+        <di:waypoint x="1330" y="330" />
+        <di:waypoint x="1382" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_14_di" bpmnElement="Flow_AsIs_14">
+        <di:waypoint x="1160" y="455" />
+        <di:waypoint x="1230" y="455" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1152" y="437" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_15_di" bpmnElement="Flow_AsIs_15">
+        <di:waypoint x="1135" y="480" />
+        <di:waypoint x="1135" y="547" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1136" y="487" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_16_di" bpmnElement="Flow_AsIs_16">
+        <di:waypoint x="1110" y="455" />
+        <di:waypoint x="410" y="455" />
+        <di:waypoint x="410" y="355" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="915" y="426" width="90" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_17_di" bpmnElement="Flow_AsIs_17">
+        <di:waypoint x="1330" y="455" />
+        <di:waypoint x="1385" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_18_di" bpmnElement="Flow_AsIs_18">
+        <di:waypoint x="1435" y="455" />
+        <di:waypoint x="1502" y="455" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1454" y="437" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_19_di" bpmnElement="Flow_AsIs_19">
+        <di:waypoint x="1410" y="480" />
+        <di:waypoint x="1410" y="520" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1426" y="487" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_AsIs_20_di" bpmnElement="Flow_AsIs_20">
+        <di:waypoint x="1460" y="565" />
+        <di:waypoint x="1502" y="565" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_City_01_di" bpmnElement="Flow_City_01">
+        <di:waypoint x="888" y="745" />
+        <di:waypoint x="950" y="745" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_City_02_di" bpmnElement="Flow_City_02">
+        <di:waypoint x="1050" y="745" />
+        <di:waypoint x="1090" y="745" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_City_03_di" bpmnElement="Flow_City_03">
+        <di:waypoint x="1190" y="745" />
+        <di:waypoint x="1252" y="745" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_City_04_di" bpmnElement="Flow_City_04">
+        <di:waypoint x="1413" y="915" />
+        <di:waypoint x="1470" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_City_05_di" bpmnElement="Flow_City_05">
+        <di:waypoint x="1570" y="915" />
+        <di:waypoint x="1632" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_01_di" bpmnElement="Message_AsIs_01">
+        <di:waypoint x="610" y="160" />
+        <di:waypoint x="610" y="100" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="521" y="113" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_02_di" bpmnElement="Message_AsIs_02">
+        <di:waypoint x="640" y="100" />
+        <di:waypoint x="640" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="653" y="106" width="78" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_03_di" bpmnElement="Message_AsIs_03">
+        <di:waypoint x="870" y="100" />
+        <di:waypoint x="870" y="285" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="880" y="106" width="90" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_04_di" bpmnElement="Message_AsIs_04">
+        <di:waypoint x="1265" y="500" />
+        <di:waypoint x="1265" y="645" />
+        <di:waypoint x="870" y="645" />
+        <di:waypoint x="870" y="727" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="809" y="693" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_05_di" bpmnElement="Message_AsIs_05">
+        <di:waypoint x="1140" y="700" />
+        <di:waypoint x="1140" y="665" />
+        <di:waypoint x="1295" y="665" />
+        <di:waypoint x="1295" y="500" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1307" y="608" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_06_di" bpmnElement="Message_AsIs_06">
+        <di:waypoint x="1395" y="610" />
+        <di:waypoint x="1395" y="897" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1306" y="808" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AsIs_07_di" bpmnElement="Message_AsIs_07">
+        <di:waypoint x="1520" y="870" />
+        <di:waypoint x="1520" y="665" />
+        <di:waypoint x="1425" y="665" />
+        <di:waypoint x="1425" y="610" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1533" y="773" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Annotation_PP01_di" bpmnElement="Association_Annotation_PP01">
+        <di:waypoint x="675" y="185" />
+        <di:waypoint x="690" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Annotation_PP02_di" bpmnElement="Association_Annotation_PP02">
+        <di:waypoint x="905" y="285" />
+        <di:waypoint x="905" y="208" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Annotation_PP03_di" bpmnElement="Association_Annotation_PP03">
+        <di:waypoint x="1050" y="285" />
+        <di:waypoint x="1085" y="208" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Annotation_PP04_di" bpmnElement="Association_Annotation_PP04">
+        <di:waypoint x="1000" y="790" />
+        <di:waypoint x="1000" y="802" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Annotation_PP05_di" bpmnElement="Association_Annotation_PP05">
+        <di:waypoint x="1520" y="960" />
+        <di:waypoint x="1520" y="978" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

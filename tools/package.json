@@ -1,0 +1,23 @@
+{
+  "name": "council-minutes-ba-pack-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build tools for the business analysis pack: BPMN generation and validation, diagram export, traceability checks and PDF rendering.",
+  "type": "module",
+  "scripts": {
+    "bpmn": "node bpmn/build-bpmn.mjs && node bpmn/validate-export.mjs",
+    "lint:bpmn": "bpmnlint ../diagrams/current-state.bpmn ../diagrams/future-state.bpmn",
+    "diagrams": "node diagrams/build-static-svgs.mjs && node diagrams/render-png.mjs",
+    "trace": "node trace/check-traceability.mjs",
+    "pdf": "node pdf/build-pdf.mjs",
+    "build": "npm run bpmn && npm run lint:bpmn && npm run diagrams && npm run trace && npm run pdf"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "bpmn-js": "18.31.0",
+    "bpmnlint": "11.15.0",
+    "github-slugger": "2.0.0",
+    "markdown-it": "15.0.3",
+    "puppeteer-core": "25.14.0"
+  }
+}
