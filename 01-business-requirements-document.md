@@ -540,7 +540,7 @@ A scheduled pipeline checks the portal for newly published minutes. It indexes t
 |---|---|---|---|
 | NFR-03.1 | Measure p95 answer time over an evaluation run (at least 100 requests, or as agreed) and report it with the test conditions. | Should | PA-05. |
 | NFR-03.2 | Measure search-only response time in the browser after the page has loaded. | Should | PA-06. |
-| NFR-03.3 | Show a progress indicator while an answer is prepared, announced to assistive technology. | Should | UAT-27, UAT-24. |
+| NFR-03.3 | Show a progress indicator while an answer is prepared, announced to assistive technology. | Should | UAT-27. |
 
 #### NFR-04 Cost: average model cost per answer under CAD $0.05 (measured from API usage)
 
