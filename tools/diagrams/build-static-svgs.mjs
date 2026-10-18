@@ -273,6 +273,82 @@ function dataModel() {
     parts.join('\n'));
 }
 
+// ---------------------------------------------------------------------------
+// Simplified future-state flow (for the two-page summary, where the full BPMN
+// map would be unreadable). Same process as diagrams/future-state.bpmn.
+// ---------------------------------------------------------------------------
+function simplifiedFlow() {
+  const W = 1120;
+  const H = 372;
+  const parts = [];
+  const FS = 17;
+  const box = (x, y, w, h, label, { fill = '#ffffff', stroke = C.line, bold = false } = {}) => {
+    parts.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`);
+    const lines = wrap(label, Math.floor((w - 16) / (FS * 0.52)));
+    const lh = FS * 1.2;
+    const top = y + h / 2 - (lines.length * lh) / 2 + FS * 0.85;
+    parts.push(text(x + w / 2, top, lines, { size: FS, anchor: 'middle', weight: bold ? 'bold' : 'normal', lineHeight: 1.2 }));
+  };
+  const arrow = (pts) => {
+    const d = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x},${y}`).join(' ');
+    parts.push(`<path d="${d}" fill="none" stroke="${C.line}" stroke-width="2" marker-end="url(#arrow)"/>`);
+  };
+  const rowLabel = (y, label) => parts.push(text(20, y, label, { size: 16, weight: 'bold', fill: C.sysStroke }));
+
+  // Row A: answering a question
+  rowLabel(24, 'Answering a question');
+  const ay = 40;
+  const ah = 90;
+  const xs = [20, 205, 390, 575];
+  box(xs[0], ay, 150, ah, 'Ask a question in plain language');
+  box(xs[1], ay, 150, ah, 'Retrieve passages (keyword + semantic)', { fill: C.sysFill, stroke: C.sysStroke });
+  box(xs[2], ay, 150, ah, 'Draft the answer from passages only', { fill: C.sysFill, stroke: C.sysStroke });
+  box(xs[3], ay, 150, ah, 'Check that every claim is cited', { fill: C.sysFill, stroke: C.sysStroke });
+  const my = ay + ah / 2;
+  for (let i = 0; i < 3; i++) arrow([[xs[i] + 150, my], [xs[i + 1] - 4, my]]);
+  // decision
+  const dx = 810;
+  parts.push(`<path d="M${dx - 38},${my} L${dx},${my - 38} L${dx + 38},${my} L${dx},${my + 38} z" fill="#ffffff" stroke="${C.line}" stroke-width="2"/>`);
+  parts.push(text(dx, my + 6, '?', { size: 20, weight: 'bold', anchor: 'middle' }));
+  parts.push(text(dx, my + 60, 'Supported by', { size: 15, anchor: 'middle', fill: C.muted }));
+  parts.push(text(dx, my + 78, 'the minutes?', { size: 15, anchor: 'middle', fill: C.muted }));
+  arrow([[xs[3] + 150, my], [dx - 42, my]]);
+  // outcomes
+  const ox = 895;
+  const ow = 215;
+  box(ox, 2, ow, 92, 'Answer with citations, excerpts and a link to the official minutes', { stroke: C.ink });
+  box(ox, 112, ow, 70, '"Not found in the minutes", with next steps', { stroke: C.ink });
+  arrow([[dx, my - 38], [dx, 48], [ox - 4, 48]]);
+  parts.push(text(dx + 8, 38, 'Yes', { size: 15, fill: C.muted }));
+  arrow([[dx + 38, my], [dx + 58, my], [dx + 58, 147], [ox - 4, 147]]);
+  parts.push(text(dx + 50, my - 8, 'No', { size: 15, fill: C.muted, anchor: 'middle' }));
+
+  // Shared index
+  const ix = xs[1] + 75;
+  parts.push(`<path d="M${ix - 34},${186} a34,9 0 0 0 68,0 a34,9 0 0 0 -68,0 v38 a34,9 0 0 0 68,0 v-38" fill="#ffffff" stroke="${C.line}" stroke-width="2"/>`);
+  parts.push(text(ix + 44, 212, 'Minutes index', { size: 15, fill: C.muted }));
+  arrow([[ix, 177], [ix, ay + ah + 4]]);
+
+  // Row B: keeping the index current
+  rowLabel(262, 'Daily update');
+  const by = 276;
+  const bh = 82;
+  box(xs[0], by, 150, bh, 'Check eSCRIBE for new minutes');
+  box(xs[1], by, 150, bh, 'Split into passages and index', { fill: C.sysFill, stroke: C.sysStroke });
+  box(xs[2], by, 150, bh, 'Run the quality gate (NFR-01, NFR-02)', { fill: C.sysFill, stroke: C.sysStroke });
+  box(xs[3], by, 150, bh, 'Publish the index and coverage dates', { fill: C.sysFill, stroke: C.sysStroke });
+  const ny = by + bh / 2;
+  for (let i = 0; i < 3; i++) arrow([[xs[i] + 150, ny], [xs[i + 1] - 4, ny]]);
+  arrow([[ix, by], [ix, 237]]);
+  parts.push(text(xs[3] + 172, by + 28, wrap('If the gate fails, the previous index stays live and the maintainer is alerted.', 40), { size: 15, fill: C.muted, lineHeight: 1.25 }));
+
+  return svgDoc(W, H,
+    'Simplified future-state flow for the St. John\'s Council Minutes Assistant',
+    'A question is answered from retrieved passages only, every claim is checked for a citation, and the user gets either a cited answer or a not found reply. A daily pipeline indexes new minutes and publishes the index only if the quality gate passes. Simplified from diagrams/future-state.bpmn.',
+    parts.join('\n'));
+}
+
 writeFileSync(resolve(outDir, 'context-diagram.svg'), contextDiagram(), 'utf8');
 writeFileSync(resolve(outDir, 'conceptual-data-model.svg'), dataModel(), 'utf8');
-console.log('wrote diagrams/context-diagram.svg and diagrams/conceptual-data-model.svg');
+writeFileSync(resolve(outDir, 'future-state-simplified.svg'), simplifiedFlow(), 'utf8');
+console.log('wrote diagrams/context-diagram.svg, diagrams/conceptual-data-model.svg and diagrams/future-state-simplified.svg');

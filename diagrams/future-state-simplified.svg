@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="372" viewBox="0 0 1120 372" role="img" aria-labelledby="t d">
+<title id="t">Simplified future-state flow for the St. John's Council Minutes Assistant</title>
+<desc id="d">A question is answered from retrieved passages only, every claim is checked for a citation, and the user gets either a cited answer or a not found reply. A daily pipeline indexes new minutes and publishes the index only if the quality gate passes. Simplified from diagrams/future-state.bpmn.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#3d444d"/>
+  </marker>
+</defs>
+<rect x="0" y="0" width="1120" height="372" fill="#ffffff"/>
+<text x="20" y="24" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" text-anchor="start" fill="#6a4c86"><tspan x="20" dy="0">Answering a question</tspan></text>
+<rect x="20" y="40" width="150" height="90" rx="10" fill="#ffffff" stroke="#3d444d" stroke-width="2"/>
+<text x="95" y="68.85000000000001" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="95" dy="0">Ask a question</tspan><tspan x="95" dy="20.4">in plain</tspan><tspan x="95" dy="20.4">language</tspan></text>
+<rect x="205" y="40" width="150" height="90" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="280" y="58.650000000000006" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="280" dy="0">Retrieve</tspan><tspan x="280" dy="20.4">passages</tspan><tspan x="280" dy="20.4">(keyword +</tspan><tspan x="280" dy="20.4">semantic)</tspan></text>
+<rect x="390" y="40" width="150" height="90" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="465" y="68.85000000000001" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="465" dy="0">Draft the</tspan><tspan x="465" dy="20.4">answer from</tspan><tspan x="465" dy="20.4">passages only</tspan></text>
+<rect x="575" y="40" width="150" height="90" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="650" y="68.85000000000001" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="650" dy="0">Check that</tspan><tspan x="650" dy="20.4">every claim is</tspan><tspan x="650" dy="20.4">cited</tspan></text>
+<path d="M170,85 L201,85" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M355,85 L386,85" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M540,85 L571,85" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M772,85 L810,47 L848,85 L810,123 z" fill="#ffffff" stroke="#3d444d" stroke-width="2"/>
+<text x="810" y="91" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#1f2328"><tspan x="810" dy="0">?</tspan></text>
+<text x="810" y="145" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="810" dy="0">Supported by</tspan></text>
+<text x="810" y="163" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="810" dy="0">the minutes?</tspan></text>
+<path d="M725,85 L768,85" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="895" y="2" width="215" height="92" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2"/>
+<text x="1002.5" y="31.85" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="1002.5" dy="0">Answer with citations,</tspan><tspan x="1002.5" dy="20.4">excerpts and a link to</tspan><tspan x="1002.5" dy="20.4">the official minutes</tspan></text>
+<rect x="895" y="112" width="215" height="70" rx="10" fill="#ffffff" stroke="#1f2328" stroke-width="2"/>
+<text x="1002.5" y="130.85" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="1002.5" dy="0">&quot;Not found in the</tspan><tspan x="1002.5" dy="20.4">minutes&quot;, with next</tspan><tspan x="1002.5" dy="20.4">steps</tspan></text>
+<path d="M810,47 L810,48 L891,48" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="818" y="38" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="818" dy="0">Yes</tspan></text>
+<path d="M848,85 L868,85 L868,147 L891,147" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="860" y="77" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="middle" fill="#57606a"><tspan x="860" dy="0">No</tspan></text>
+<path d="M246,186 a34,9 0 0 0 68,0 a34,9 0 0 0 -68,0 v38 a34,9 0 0 0 68,0 v-38" fill="#ffffff" stroke="#3d444d" stroke-width="2"/>
+<text x="324" y="212" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="324" dy="0">Minutes index</tspan></text>
+<path d="M280,177 L280,134" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="20" y="262" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" text-anchor="start" fill="#6a4c86"><tspan x="20" dy="0">Daily update</tspan></text>
+<rect x="20" y="276" width="150" height="82" rx="10" fill="#ffffff" stroke="#3d444d" stroke-width="2"/>
+<text x="95" y="311.05" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="95" dy="0">Check eSCRIBE</tspan><tspan x="95" dy="20.4">for new minutes</tspan></text>
+<rect x="205" y="276" width="150" height="82" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="280" y="300.84999999999997" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="280" dy="0">Split into</tspan><tspan x="280" dy="20.4">passages and</tspan><tspan x="280" dy="20.4">index</tspan></text>
+<rect x="390" y="276" width="150" height="82" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="465" y="300.84999999999997" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="465" dy="0">Run the quality</tspan><tspan x="465" dy="20.4">gate (NFR-01,</tspan><tspan x="465" dy="20.4">NFR-02)</tspan></text>
+<rect x="575" y="276" width="150" height="82" rx="10" fill="#f6f2fa" stroke="#6a4c86" stroke-width="2"/>
+<text x="650" y="300.84999999999997" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="normal" text-anchor="middle" fill="#1f2328"><tspan x="650" dy="0">Publish the</tspan><tspan x="650" dy="20.4">index and</tspan><tspan x="650" dy="20.4">coverage dates</tspan></text>
+<path d="M170,317 L201,317" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M355,317 L386,317" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M540,317 L571,317" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M280,276 L280,237" fill="none" stroke="#3d444d" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="747" y="304" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#57606a"><tspan x="747" dy="0">If the gate fails, the previous index</tspan><tspan x="747" dy="18.8">stays live and the maintainer is</tspan><tspan x="747" dy="18.8">alerted.</tspan></text>
+</svg>
